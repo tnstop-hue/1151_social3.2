@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>五上社會 3-2｜開港通商為什麼改變了臺灣的發展？手繪互動學習網</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Zen Maru Gothic & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-paper: #fdfbf5;
+      --ink-brown: #4a3728;
+      --shadow-tan: #decbb3;
+      --tea-green: #7cb88b;
+      --ocean-blue: #6ca8d6;
+      --warm-orange: #f29d61;
+      --soft-pink: #ee8f99;
+      --butter-yellow: #f6d56f;
+    }
+
+    body {
+      font-family: "Zen Maru Gothic", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg-paper);
+      color: var(--ink-brown);
+      background-image: radial-gradient(#e4d6c0 1.4px, transparent 1.4px);
+      background-size: 22px 22px;
+      overflow-x: hidden;
+    }
+
+    /* 手繪繪本不規則圓角卡片 */
+    .sketch-card {
+      background: #ffffff;
+      border: 2.8px solid var(--ink-brown);
+      border-radius: 24px 19px 23px 20px;
+      box-shadow: 4.5px 4.5px 0 var(--shadow-tan);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .sketch-card-soft {
+      background: #fffdf8;
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 20px 17px 21px 18px;
+      box-shadow: 3.5px 3.5px 0 var(--shadow-tan);
+    }
+
+    .sketch-hover:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 6px 6px 0 var(--shadow-tan);
+    }
+
+    /* 手繪圓角按鈕 */
+    .sketch-btn {
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 9999px;
+      box-shadow: 3px 3px 0 var(--ink-brown);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .sketch-btn:hover:not(:disabled) {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--ink-brown);
+    }
+
+    .sketch-btn:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--ink-brown);
+    }
+
+    /* 分頁標籤 */
+    .tab-btn {
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 18px 15px 17px 16px;
+      box-shadow: 3px 3px 0 var(--shadow-tan);
+      background: #ffffff;
+      color: var(--ink-brown);
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--warm-orange);
+      color: #ffffff;
+      box-shadow: 3px 3px 0 var(--ink-brown);
+      transform: translateY(-2px);
+    }
+
+    /* 手繪輸入框 */
+    .sketch-input {
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 14px;
+      background: #fffdf9;
+      color: var(--ink-brown);
+      box-shadow: inset 2px 2px 0 rgba(222, 203, 179, 0.35);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .sketch-input:focus {
+      border-color: var(--ocean-blue);
+      box-shadow: 0 0 0 3px rgba(108, 168, 214, 0.25);
+    }
+
+    /* 折疊/展開卡片 */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.38s ease, opacity 0.28s ease;
+      opacity: 0;
+    }
+
+    .accordion-content.open {
+      max-height: 1400px;
+      opacity: 1;
+    }
+
+    /* 紙膠帶裝飾 */
+    .washi-tape {
+      position: relative;
+    }
+    .washi-tape::before {
+      content: "";
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-1.8deg);
+      width: 108px;
+      height: 22px;
+      background: rgba(246, 213, 111, 0.6);
+      border: 1.5px dashed rgba(74, 55, 40, 0.35);
+      border-radius: 4px;
+    }
+
+    /* 動畫 */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50% { transform: translateY(-5px) rotate(1.2deg); }
+    }
+    .animate-float {
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+
+    @keyframes puffSmoke {
+      0% { transform: translate(0, 0) scale(0.8); opacity: 0.85; }
+      100% { transform: translate(-18px, -16px) scale(1.35); opacity: 0; }
+    }
+    .animate-smoke {
+      animation: puffSmoke 2.4s ease-out infinite;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.28s ease forwards;
+    }
+
+    /* 測驗選項 */
+    .quiz-option {
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 3px 3px 0 var(--shadow-tan);
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .quiz-option:hover:not(.locked) {
+      background: #fff7e6;
+      transform: translateX(3px);
+    }
+    .quiz-option.correct {
+      background: #e6f6ea;
+      border-color: #2f7a44;
+      box-shadow: 3px 3px 0 #7cb88b;
+    }
+    .quiz-option.wrong {
+      background: #fdecef;
+      border-color: #c24250;
+      box-shadow: 3px 3px 0 #ee8f99;
+    }
+
+    /* 地圖可點擊熱區 */
+    .map-hotspot {
+      cursor: pointer;
+      transition: transform 0.18s ease;
+    }
+    .map-hotspot:hover {
+      filter: drop-shadow(0 0 4px rgba(242, 157, 97, 0.9));
+    }
+
+    /* 時間軸按鈕 */
+    .timeline-node {
+      border: 2.5px solid var(--ink-brown);
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 3px 3px 0 var(--shadow-tan);
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .timeline-node.active {
+      background: var(--butter-yellow);
+      box-shadow: 3px 3px 0 var(--ink-brown);
+      transform: translateY(-2px);
+    }
+
+    #toast-box {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-14">
+
+  <!-- 懸浮提示訊息框 (取代 alert) -->
+  <div id="toast-box" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4">
+    <div id="toast-text" class="px-5 py-3 rounded-full bg-[#4a3728] text-[#fdfbf5] font-bold text-sm sm:text-base shadow-lg border-2 border-[#f6d56f]">
+      提示訊息
+    </div>
+  </div>
+
+  <!-- 頂部可愛橫幅 -->
+  <header class="max-w-5xl mx-auto px-3 sm:px-6 pt-4 sm:pt-6">
+    <div class="sketch-card overflow-hidden bg-gradient-to-br from-[#eaf5fc] via-[#fdfbf5] to-[#fef6e4]">
+      <div class="p-4 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-center md:text-left flex-1">
+          <div class="inline-flex flex-wrap items-center justify-center md:justify-start gap-2 px-3 py-1 rounded-full bg-[#f6d56f]/45 border-2 border-[#4a3728] text-xs sm:text-sm font-bold mb-2">
+            <span>📚 115學年五上社會</span>
+            <span>•</span>
+            <span>第3單元 第2課</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-wide text-[#4a3728] leading-snug">
+            開港通商為什麼改變了<br class="hidden sm:inline" />臺灣的發展？
+          </h1>
+          <p class="mt-2 text-sm sm:text-base font-medium text-[#6f5542]">
+            搭上時光蒸氣船與騰雲號火車，探索開港貿易、沈葆楨與劉銘傳建設，還有西方朋友留給臺灣的珍貴禮物！
+          </p>
+          <div class="mt-3 flex flex-wrap justify-center md:justify-start gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-[#7cb88b]/25 border border-[#4a3728] text-xs font-bold">🍃 課本 P.64~75</span>
+            <span class="px-2.5 py-1 rounded-full bg-[#6ca8d6]/25 border border-[#4a3728] text-xs font-bold">📖 習作 P.16~17</span>
+            <span class="px-2.5 py-1 rounded-full bg-[#ee8f99]/25 border border-[#4a3728] text-xs font-bold">📝 25題線上自我測驗</span>
+          </div>
+        </div>
+
+        <!-- 自繪可愛 SVG 頁首插畫：開港商船、茶葉箱與騰雲號小火車 -->
+        <div class="w-full max-w-[340px] sm:max-w-[370px] shrink-0">
+          <svg viewBox="0 0 360 185" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" aria-label="開港商船與騰雲號火車手繪插畫">
+            <!-- 暖陽 -->
+            <circle cx="308" cy="40" r="21" fill="#f6d56f" stroke="#4a3728" stroke-width="2.5" />
+            <circle cx="302" cy="38" r="2" fill="#4a3728" />
+            <circle cx="314" cy="38" r="2" fill="#4a3728" />
+            <path d="M303 45 Q308 50 313 45" fill="none" stroke="#4a3728" stroke-width="2" stroke-linecap="round" />
+
+            <!-- 軟綿白雲 -->
+            <path d="M38 40 Q38 28 50 28 Q57 20 69 24 Q80 24 82 35 Q90 38 87 46 L42 46 Q34 46 38 40 Z" fill="#ffffff" stroke="#4a3728" stroke-width="2.2" />
+            <path d="M168 28 Q168 18 178 18 Q185 12 195 16 Q205 16 206 26 Q213 28 210 35 L172 35 Q165 35 168 28 Z" fill="#ffffff" stroke="#4a3728" stroke-width="2" />
+
+            <!-- 背景茶園山丘與騰雲號小火車（右側陸地） -->
+            <path d="M150 135 Q205 62 275 78 Q325 65 360 95 L360 145 L150 145 Z" fill="#7cb88b" stroke="#4a3728" stroke-width="2.5" />
+            <!-- 茶樹波紋 -->
+            <path d="M195 104 Q212 96 230 104 M245 96 Q262 88 280 96" fill="none" stroke="#e9f7ed" stroke-width="2.2" stroke-linecap="round" />
+
+            <!-- 鐵軌 -->
+            <line x1="175" y1="133" x2="352" y2="133" stroke="#4a3728" stroke-width="3" />
+            <g stroke="#4a3728" stroke-width="2">
+              <line x1="190" y1="130" x2="190" y2="137" />
+              <line x1="215" y1="130" x2="215" y2="137" />
+              <line x1="240" y1="130" x2="240" y2="137" />
+              <line x1="265" y1="130" x2="265" y2="137" />
+              <line x1="290" y1="130" x2="290" y2="137" />
+              <line x1="315" y1="130" x2="315" y2="137" />
+              <line x1="340" y1="130" x2="340" y2="137" />
+            </g>
+
+            <!-- 可愛騰雲號蒸汽火車頭 -->
+            <g transform="translate(230, 86)">
+              <!-- 冒煙 -->
+              <circle cx="24" cy="-2" r="6" fill="#ffffff" stroke="#4a3728" stroke-width="1.8" class="animate-smoke" />
+              <circle cx="15" cy="-10" r="8" fill="#ffffff" stroke="#4a3728" stroke-width="1.8" class="animate-smoke" style="animation-delay: 0.7s;" />
+              <!-- 煙囪 -->
+              <path d="M22 14 L18 2 L32 2 L28 14 Z" fill="#4a3728" />
+              <!-- 鍋爐 -->
+              <rect x="14" y="14" width="44" height="22" rx="6" fill="#594a42" stroke="#4a3728" stroke-width="2.2" />
+              <!-- 駕駛室 -->
+              <rect x="52" y="6" width="28" height="30" rx="4" fill="#ee8f99" stroke="#4a3728" stroke-width="2.2" />
+              <rect x="58" y="12" width="15" height="11" rx="2" fill="#fdfbf5" stroke="#4a3728" stroke-width="1.8" />
+              <!-- 紅色車底與車輪 -->
+              <rect x="10" y="34" width="74" height="7" rx="3" fill="#f29d61" stroke="#4a3728" stroke-width="2" />
+              <circle cx="24" cy="43" r="6.5" fill="#f6d56f" stroke="#4a3728" stroke-width="2.2" />
+              <circle cx="46" cy="43" r="6.5" fill="#f6d56f" stroke="#4a3728" stroke-width="2.2" />
+              <circle cx="68" cy="43" r="6.5" fill="#f6d56f" stroke="#4a3728" stroke-width="2.2" />
+              <text x="48" y="29" text-anchor="middle" font-size="8.5" font-weight="900" fill="#fdfbf5">騰雲</text>
+            </g>
+
+            <!-- 左側洋行帆船（開港通商） -->
+            <g class="animate-float" style="transform-origin: 95px 115px;">
+              <!-- 船身 -->
+              <path d="M32 122 L152 122 L138 146 Q92 152 46 146 Z" fill="#f29d61" stroke="#4a3728" stroke-width="2.6" stroke-linejoin="round" />
+              <line x1="40" y1="132" x2="144" y2="132" stroke="#4a3728" stroke-width="2" />
+              <!-- 船上茶箱與糖桶 -->
+              <rect x="52" y="108" width="20" height="14" rx="2" fill="#7cb88b" stroke="#4a3728" stroke-width="2" />
+              <text x="62" y="119" text-anchor="middle" font-size="9" font-weight="900" fill="#fff">茶</text>
+              <rect x="112" y="108" width="20" height="14" rx="2" fill="#f6d56f" stroke="#4a3728" stroke-width="2" />
+              <text x="122" y="119" text-anchor="middle" font-size="9" font-weight="900" fill="#4a3728">糖</text>
+              <!-- 桅杆與白帆 -->
+              <line x1="92" y1="54" x2="92" y2="122" stroke="#4a3728" stroke-width="3" stroke-linecap="round" />
+              <path d="M95 58 Q134 68 130 106 Q112 110 95 106 Z" fill="#ffffff" stroke="#4a3728" stroke-width="2.4" />
+              <path d="M89 68 Q62 78 64 105 Q78 108 89 104 Z" fill="#fff6e0" stroke="#4a3728" stroke-width="2.2" />
+              <polygon points="92,54 112,48 92,42" fill="#ee8f99" stroke="#4a3728" stroke-width="1.8" />
+            </g>
+
+            <!-- 前景海洋波浪 -->
+            <path d="M-10 144 Q18 134 46 144 T102 144 T158 144 T214 144 T270 144 T326 144 T382 144 L382 190 L-10 190 Z" fill="#6ca8d6" opacity="0.72" stroke="#4a3728" stroke-width="2.5" />
+            <path d="M-12 162 Q16 154 44 162 T100 162 T156 162 T212 162 T268 162 T324 162 T380 162" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.85" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 五大分頁導覽列 -->
+  <nav class="max-w-5xl mx-auto px-3 sm:px-6 mt-4 sticky top-2 z-30">
+    <div class="bg-[#fdfbf5]/95 backdrop-blur-sm p-2 rounded-2xl border-2.5 border-[#4a3728] shadow-[3px_3px_0_#decbb3] flex flex-wrap justify-center gap-2">
+      <button onclick="switchTab('map')" id="tab-map" class="tab-btn active px-3 sm:px-4 py-2 text-sm sm:text-base flex items-center gap-1.5">
+        <span>🗺️</span><span>學習地圖</span>
+      </button>
+      <button onclick="switchTab('ports')" id="tab-ports" class="tab-btn px-3 sm:px-4 py-2 text-sm sm:text-base flex items-center gap-1.5">
+        <span>⛵</span><span>開港與經濟北移</span>
+      </button>
+      <button onclick="switchTab('defense')" id="tab-defense" class="tab-btn px-3 sm:px-4 py-2 text-sm sm:text-base flex items-center gap-1.5">
+        <span>🚂</span><span>牡丹社事件與建省</span>
+      </button>
+      <button onclick="switchTab('western')" id="tab-western" class="tab-btn px-3 sm:px-4 py-2 text-sm sm:text-base flex items-center gap-1.5">
+        <span>🩺</span><span>西方人的足跡</span>
+      </button>
+      <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3 sm:px-4 py-2 text-sm sm:text-base flex items-center gap-1.5">
+        <span>📝</span><span>線上自我測驗</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 主內容區 -->
+  <main class="max-w-5xl mx-auto px-3 sm:px-6 mt-6">
+
+    <!-- ====================================================== -->
+    <!-- 分頁一：🗺️ 學習地圖（首頁總覽）                          -->
+    <!-- ====================================================== -->
+    <section id="panel-map" class="space-y-6">
+      <!-- 個人探索儀表板 -->
+      <div class="sketch-card p-5 sm:p-6 bg-white">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black flex items-center gap-2">
+              <span>🧭</span><span>我的時光探索儀表板</span>
+            </h2>
+            <p class="text-sm text-[#6f5542] mt-0.5">收集全部 11 張手繪圖鑑卡、拿下 3 枚徽章，再挑戰 25 題測驗！</p>
+          </div>
+          <button onclick="switchTab('quiz')" class="sketch-btn bg-[#ee8f99] text-white font-black px-5 py-2.5 text-sm sm:text-base flex items-center justify-center gap-2">
+            <span>🚀</span><span>直接開始 25 題測驗</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <!-- 圖鑑收集進度（0/11） -->
+          <div class="p-4 rounded-2xl bg-[#f1faf3] border-2 border-[#4a3728]">
+            <div class="flex items-center justify-between text-sm font-bold mb-1.5">
+              <span>📚 圖鑑收集進度</span>
+              <span id="stat-cards-text" class="text-[#2f7a44] font-black">0 / 11</span>
+            </div>
+            <div class="w-full h-4 bg-white rounded-full border-2 border-[#4a3728] overflow-hidden">
+              <div id="stat-cards-bar" class="h-full bg-[#7cb88b] transition-all duration-300" style="width: 0%;"></div>
+            </div>
+            <p class="text-xs text-[#6f5542] mt-1.5">點開各分頁的知識圖鑑卡即可解鎖！</p>
+          </div>
+
+          <!-- 互動小遊戲徽章（3枚） -->
+          <div class="p-4 rounded-2xl bg-[#eef6fc] border-2 border-[#4a3728]">
+            <div class="flex items-center justify-between text-sm font-bold mb-1.5">
+              <span>🏅 互動小遊戲徽章</span>
+              <span id="stat-games-text" class="text-[#357ab3] font-black">0 / 3</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5 mt-2">
+              <span id="badge-g1" class="px-2.5 py-1 rounded-full text-xs font-bold border-2 border-[#4a3728] bg-gray-100 text-gray-400">⚓ 貿易小船長</span>
+              <span id="badge-g2" class="px-2.5 py-1 rounded-full text-xs font-bold border-2 border-[#4a3728] bg-gray-100 text-gray-400">🚂 現代化工程師</span>
+              <span id="badge-g3" class="px-2.5 py-1 rounded-full text-xs font-bold border-2 border-[#4a3728] bg-gray-100 text-gray-400">🌍 文化交流大使</span>
+            </div>
+          </div>
+
+          <!-- 25題測驗最高分 -->
+          <div class="p-4 rounded-2xl bg-[#fff7e8] border-2 border-[#4a3728]">
+            <div class="flex items-center justify-between text-sm font-bold mb-1">
+              <span>🏆 25題測驗最高分</span>
+              <span id="stat-best-score" class="text-xl font-black text-[#d97736]">尚未挑戰</span>
+            </div>
+            <p class="text-xs text-[#6f5542] mt-1.5">內建 Google Classroom 一鍵複製成績單，交作業超輕鬆！</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 本課核心大哉問 -->
+      <div class="sketch-card-soft p-5 sm:p-6 washi-tape bg-[#fffcf0]">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-[#f6d56f] border-2.5 border-[#4a3728] flex items-center justify-center text-2xl shrink-0">💡</div>
+          <div>
+            <div class="text-xs font-black text-[#c9742e] tracking-wider">本課核心大哉問</div>
+            <h3 class="text-lg sm:text-xl font-black text-[#4a3728] mt-0.5">
+              為什麼清帝國從「消極治理」變成「積極建設」臺灣？
+            </h3>
+            <p class="text-sm text-[#6f5542] mt-1 leading-relaxed">
+              1860年代被迫<strong>開港通商</strong>後，臺灣經濟繁榮、茶糖樟腦外銷世界；接著遭遇<strong>1874年日本牡丹社事件</strong>與<strong>1884年清法戰爭</strong>，清帝國驚覺外國勢力對臺灣的野心，於是先後派<strong>沈葆楨、劉銘傳</strong>來臺，更於<strong>1885年臺灣建省</strong>，推動砲臺、鐵路、輪船與電報等現代化建設！
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 四張手繪風導覽卡片 -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-black mb-3 flex items-center gap-2">
+          <span>🎒</span><span>選擇探索主題，出發囉！</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div onclick="switchTab('ports')" class="sketch-card sketch-hover p-5 cursor-pointer bg-gradient-to-br from-white to-[#eef7fc]">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#6ca8d6] border-2 border-[#4a3728] flex items-center justify-center text-2xl shrink-0">⛵</div>
+              <div class="flex-1">
+                <div class="text-xs font-bold text-[#357ab3]">課本 P.64~65 • 習作 P.16</div>
+                <h4 class="text-lg font-black mt-0.5">開港通商與經濟重心北移</h4>
+                <p class="text-sm text-[#6f5542] mt-1">點擊可愛臺灣港口地圖，認識四大口岸、領事館洋行、茶糖樟腦與大稻埕崛起！</p>
+                <span class="mt-3 inline-block text-xs font-black px-3 py-1 rounded-full bg-[#6ca8d6]/25 border border-[#4a3728]">探索圖鑑 + 裝船小遊戲 ➜</span>
+              </div>
+            </div>
+          </div>
+
+          <div onclick="switchTab('defense')" class="sketch-card sketch-hover p-5 cursor-pointer bg-gradient-to-br from-white to-[#fff4ea]">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#f29d61] border-2 border-[#4a3728] flex items-center justify-center text-2xl shrink-0">🚂</div>
+              <div class="flex-1">
+                <div class="text-xs font-bold text-[#c96e2c]">課本 P.66~69 • 習作 P.17</div>
+                <h4 class="text-lg font-black mt-0.5">牡丹社事件與臺灣建省</h4>
+                <p class="text-sm text-[#6f5542] mt-1">操作治臺態度時間軸，比較沈葆楨（砲臺、恆春城）與劉銘傳（鐵路、電報）！</p>
+                <span class="mt-3 inline-block text-xs font-black px-3 py-1 rounded-full bg-[#f29d61]/25 border border-[#4a3728]">探索圖鑑 + 建設分類賽 ➜</span>
+              </div>
+            </div>
+          </div>
+
+          <div onclick="switchTab('western')" class="sketch-card sketch-hover p-5 cursor-pointer bg-gradient-to-br from-white to-[#fdf0f2]">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#ee8f99] border-2 border-[#4a3728] flex items-center justify-center text-2xl shrink-0">🩺</div>
+              <div class="flex-1">
+                <div class="text-xs font-bold text-[#c24b58]">課本 P.70~75</div>
+                <h4 class="text-lg font-black mt-0.5">西方人的足跡與影響</h4>
+                <p class="text-sm text-[#6f5542] mt-1">認識斯文豪、馬雅各、馬偕與巴克禮四大人物，讀懂「寧願燒盡，不願腐朽」！</p>
+                <span class="mt-3 inline-block text-xs font-black px-3 py-1 rounded-full bg-[#ee8f99]/25 border border-[#4a3728]">人物圖鑑 + 名人猜猜樂 ➜</span>
+              </div>
+            </div>
+          </div>
+
+          <div onclick="switchTab('quiz')" class="sketch-card sketch-hover p-5 cursor-pointer bg-gradient-to-br from-white to-[#f1faf3]">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#7cb88b] border-2 border-[#4a3728] flex items-center justify-center text-2xl shrink-0">📝</div>
+              <div class="flex-1">
+                <div class="text-xs font-bold text-[#2f7a44]">Google Classroom 專用</div>
+                <h4 class="text-lg font-black mt-0.5">25 題線上自我測驗</h4>
+                <p class="text-sm text-[#6f5542] mt-1">支援完整 25 題與分區練習，即答即看白話解析，交卷一鍵複製成績單！</p>
+                <span class="mt-3 inline-block text-xs font-black px-3 py-1 rounded-full bg-[#7cb88b]/25 border border-[#4a3728]">前往填寫資料開始測驗 ➜</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- 分頁二：⛵ 開港與經濟北移（課本 P.64~65、習作 P.16）      -->
+    <!-- ====================================================== -->
+    <section id="panel-ports" class="hidden space-y-6">
+      <!-- 互動地圖區 -->
+      <div class="sketch-card p-5 sm:p-6 bg-gradient-to-b from-[#eef7fc] to-white">
+        <span class="px-3 py-1 rounded-full bg-[#6ca8d6] text-white text-xs font-bold border-2 border-[#4a3728]">課本 P.64~65 • 習作 P.16</span>
+        <h2 class="text-2xl font-black mt-2">⛵ 開港通商與臺灣四大港口互動地圖</h2>
+        <p class="text-sm text-[#6f5542] mt-1">點一點地圖上的港口、大稻埕或特產小圖示，看看它們各自有什麼精彩故事！</p>
+
+        <div class="mt-4 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+          <!-- 自繪可愛 SVG：臺灣四大通商港口與物產地圖 -->
+          <div class="lg:col-span-6 flex justify-center">
+            <svg viewBox="0 0 340 400" class="w-full max-w-[330px] h-auto rounded-2xl border-2.5 border-[#4a3728] bg-[#e2f2fc] shadow-[4px_4px_0_#decbb3]" xmlns="http://www.w3.org/2000/svg" aria-label="臺灣四大通商港口與物產地圖">
+              <!-- 海浪紋理 -->
+              <g stroke="#ffffff" stroke-width="2" fill="none" opacity="0.7" stroke-linecap="round">
+                <path d="M20 75 Q35 68 50 75 T80 75" />
+                <path d="M250 165 Q265 158 280 165 T310 165" />
+                <path d="M25 260 Q40 253 55 260 T85 260" />
+                <path d="M235 330 Q250 323 265 330 T295 330" />
+              </g>
+
+              <!-- 可愛帆船裝飾（外銷船） -->
+              <g transform="translate(26, 118)" class="map-hotspot" onclick="showMapBubble('tea')">
+                <path d="M6 26 L44 26 L38 35 L12 35 Z" fill="#f29d61" stroke="#4a3728" stroke-width="2" />
+                <line x1="25" y1="6" x2="25" y2="26" stroke="#4a3728" stroke-width="2.2" />
+                <path d="M27 8 L42 22 L27 23 Z" fill="#ffffff" stroke="#4a3728" stroke-width="1.8" />
+                <text x="25" y="48" text-anchor="middle" font-size="10" font-weight="900" fill="#357ab3">外銷歐美</text>
+              </g>
+
+              <!-- 臺灣本島輪廓 -->
+              <path d="M210 38 Q242 52 248 92 Q256 140 236 225 Q220 290 198 354 Q188 372 178 355 Q162 315 130 278 Q106 238 112 182 Q122 122 162 72 Q184 44 210 38 Z" fill="#b7dfb9" stroke="#4a3728" stroke-width="3" stroke-linejoin="round" />
+
+              <!-- 北部茶葉與樟腦產區陰影 -->
+              <path d="M168 78 Q210 56 238 92 Q232 138 190 154 Q146 142 152 106 Z" fill="#7cb88b" opacity="0.55" />
+              <!-- 南部蔗糖產區陰影 -->
+              <path d="M124 235 Q165 225 186 258 Q182 308 158 318 Q128 292 124 235 Z" fill="#f6d56f" opacity="0.65" />
+
+              <!-- 經濟重心由南往北箭頭 -->
+              <path d="M84 295 Q68 205 112 105" fill="none" stroke="#ee8f99" stroke-width="3.5" stroke-dasharray="6,5" />
+              <polygon points="116,96 105,107 117,112" fill="#ee8f99" />
+              <rect x="28" y="188" width="66" height="34" rx="8" fill="#ffffff" stroke="#4a3728" stroke-width="2" />
+              <text x="61" y="203" text-anchor="middle" font-size="10" font-weight="900" fill="#c24b58">經濟重心</text>
+              <text x="61" y="216" text-anchor="middle" font-size="10" font-weight="900" fill="#c24b58">由南往北⬆</text>
+
+              <!-- 熱區 1：雞籠（基隆） -->
+              <g class="map-hotspot" onclick="showMapBubble('keelung')">
+                <circle cx="222" cy="54" r="9" fill="#f29d61" stroke="#4a3728" stroke-width="2.4" />
+                <rect x="236" y="40" width="84" height="24" rx="10" fill="#ffffff" stroke="#4a3728" stroke-width="2" />
+                <text x="278" y="56" text-anchor="middle" font-size="11" font-weight="900" fill="#4a3728">⚓ 雞籠(基隆)</text>
+              </g>
+
+              <!-- 熱區 2：淡水 -->
+              <g class="map-hotspot" onclick="showMapBubble('tamsui')">
+                <circle cx="192" cy="58" r="9" fill="#6ca8d6" stroke="#4a3728" stroke-width="2.4" />
+                <rect x="92" y="34" width="88" height="24" rx="10" fill="#ffffff" stroke="#4a3728" stroke-width="2" />
+                <text x="136" y="50" text-anchor="middle" font-size="11" font-weight="900" fill="#4a3728">⚓ 淡水港</text>
+                <line x1="180" y1="50" x2="185" y2="54" stroke="#4a3728" stroke-width="1.8" />
+              </g>
+
+              <!-- 熱區 3：大稻埕 -->
+              <g class="map-hotspot" onclick="showMapBubble('dadaocheng')">
+                <circle cx="204" cy="78" r="7.5" fill="#ee8f99" stroke="#4a3728" stroke-width="2.2" />
+                <rect x="220" y="74" width="106" height="24" rx="10" fill="#fff3f5" stroke="#4a3728" stroke-width="2" />
+                <text x="273" y="90" text-anchor="middle" font-size="10.5" font-weight="900" fill="#c24b58">🏮 大稻埕(集散)</text>
+              </g>
+
+              <!-- 熱區 4：北部茶葉與樟腦 -->
+              <g class="map-hotspot" onclick="showMapBubble('tea')">
+                <rect x="150" y="106" width="84" height="32" rx="12" fill="#e9f7ed" stroke="#4a3728" stroke-width="2" />
+                <text x="192" y="121" text-anchor="middle" font-size="11" font-weight="900" fill="#2f7a44">🍃 茶葉</text>
+                <text x="192" y="133" text-anchor="middle" font-size="10" font-weight="900" fill="#2f7a44">🌲 樟腦產地</text>
+              </g>
+
+              <!-- 熱區 5：南部蔗糖 -->
+              <g class="map-hotspot" onclick="showMapBubble('sugar')">
+                <rect x="134" y="250" width="66" height="26" rx="12" fill="#fff9db" stroke="#4a3728" stroke-width="2" />
+                <text x="167" y="267" text-anchor="middle" font-size="11" font-weight="900" fill="#b36b00">🍬 蔗糖</text>
+              </g>
+
+              <!-- 熱區 6：安平（臺南） -->
+              <g class="map-hotspot" onclick="showMapBubble('anping')">
+                <circle cx="122" cy="264" r="9" fill="#f29d61" stroke="#4a3728" stroke-width="2.4" />
+                <rect x="18" y="252" width="90" height="24" rx="10" fill="#ffffff" stroke="#4a3728" stroke-width="2" />
+                <text x="63" y="268" text-anchor="middle" font-size="11" font-weight="900" fill="#4a3728">⚓ 安平(臺南)</text>
+              </g>
+
+              <!-- 熱區 7：打狗（高雄） -->
+              <g class="map-hotspot" onclick="showMapBubble('takao')">
+                <circle cx="144" cy="306" r="9" fill="#6ca8d6" stroke="#4a3728" stroke-width="2.4" />
+                <rect x="26" y="302" width="102" height="24" rx="10" fill="#ffffff" stroke="#4a3728" stroke-width="2" />
+                <text x="77" y="318" text-anchor="middle" font-size="11" font-weight="900" fill="#4a3728">⚓ 打狗(高雄)</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- 右側說明泡泡與快速點選按鈕 -->
+          <div class="lg:col-span-6 space-y-4">
+            <div id="map-bubble" class="p-5 rounded-2xl bg-[#fffcf0] border-2.5 border-[#4a3728] shadow-[4px_4px_0_#decbb3]">
+              <div class="inline-block px-2.5 py-0.5 rounded-full bg-[#f6d56f] border border-[#4a3728] text-xs font-black mb-2">👆 地圖探索小泡泡</div>
+              <h3 id="map-bubble-title" class="text-xl font-black text-[#4a3728]">點選左方港口或特產查看介紹！</h3>
+              <p id="map-bubble-body" class="text-sm sm:text-base text-[#6f5542] mt-2 leading-relaxed">
+                1860年代西方國家迫使清帝國開放臺灣四個港口：北部的<strong>雞籠、淡水</strong>，以及南部的<strong>安平、打狗</strong>。快點一點地圖上的彩色圓點吧！
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button onclick="showMapBubble('keelung')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#fff3e6]">⚓ 雞籠</button>
+              <button onclick="showMapBubble('tamsui')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#eef6fc]">⚓ 淡水</button>
+              <button onclick="showMapBubble('dadaocheng')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#fdf0f2]">🏮 大稻埕</button>
+              <button onclick="showMapBubble('tea')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#f1faf3]">🍃 茶葉與樟腦</button>
+              <button onclick="showMapBubble('anping')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#fff3e6]">⚓ 安平</button>
+              <button onclick="showMapBubble('takao')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#eef6fc]">⚓ 打狗</button>
+              <button onclick="showMapBubble('sugar')" class="px-3 py-1.5 rounded-full bg-white border-2 border-[#4a3728] text-xs font-bold hover:bg-[#fff9db]">🍬 蔗糖</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3張知識圖鑑卡（編號 1~3） -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- 圖鑑 1 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c1')">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-black text-base flex items-center gap-1.5"><span>🌍</span><span>1860年代開港通商</span></h3>
+            <span id="mark-c1" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div id="body-c1" class="accordion-content mt-2.5 text-sm text-[#4a3728] space-y-1.5">
+            <p>• <strong>原因：</strong>臺灣位居<strong>東亞航運重要位置</strong>，加上物產豐富、具有經濟利益，許多西方國家希望來臺貿易。</p>
+            <p>• <strong>四大通商港口：</strong>北部的<strong>雞籠（今基隆）、淡水</strong>；南部的<strong>安平（今臺南）、打狗（今高雄）</strong>。</p>
+          </div>
+        </div>
+
+        <!-- 圖鑑 2 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c2')">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-black text-base flex items-center gap-1.5"><span>🏛️</span><span>領事館與洋行</span></h3>
+            <span id="mark-c2" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div id="body-c2" class="accordion-content mt-2.5 text-sm text-[#4a3728] space-y-1.5">
+            <p>• <strong>領事館：</strong>外國官員辦公、居住與接待使節的場所。例如高雄「<strong>打狗英國領事館</strong>」，是臺灣第一個外國正式領事館。</p>
+            <p>• <strong>洋行：</strong>西方商人在港口設立的貿易機構，外銷茶、糖、樟腦。例如臺南「<strong>德國東興洋行</strong>」，以出口糖為主。</p>
+          </div>
+        </div>
+
+        <!-- 圖鑑 3 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c3')">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-black text-base flex items-center gap-1.5"><span>📈</span><span>經濟重心由南往北移</span></h3>
+            <span id="mark-c3" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div id="body-c3" class="accordion-content mt-2.5 text-sm text-[#4a3728] space-y-1.5">
+            <p>• <strong>北部出口：</strong>茶葉與樟腦產地在北部，運至<strong>大稻埕（今臺北市大同區）</strong>集散，再從<strong>淡水</strong>出口。英商<strong>約翰·陶德</strong>於 1869 年將臺灣茶銷往美國，打響國際知名度！</p>
+            <p>• <strong>南部出口：</strong>蔗糖產地在南部，由<strong>安平、打狗</strong>出口。</p>
+            <p>• 北部商業興盛、人口激增，使臺灣經濟重心逐漸<strong>由南往北轉移</strong>。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 習作素養小思考折疊卡 -->
+      <div class="sketch-card-soft p-4 sm:p-5 bg-[#fff9e6] cursor-pointer" onclick="toggleSimple('wb16-body')">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="font-black text-base sm:text-lg text-[#9c5a18] flex items-center gap-2">
+            <span>💡</span><span>習作 P.16 素養小思考：大稻埕與種茶的環境挑戰（點我展開）</span>
+          </h3>
+          <span class="text-xs font-black px-2.5 py-1 rounded-full bg-white border border-[#4a3728]">點我思考 ▾</span>
+        </div>
+        <div id="wb16-body" class="accordion-content mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <div class="p-3.5 rounded-xl bg-white border-2 border-[#4a3728]">
+            <div class="font-black text-[#357ab3]">❓ 大稻埕沒有種茶，為什麼會成為茶商集散地？</div>
+            <p class="mt-1.5 text-[#4a3728]">因為茶葉主要靠船運出口，而大稻埕<strong>臨近淡水港</strong>且水運便利，北部山坡地的茶葉與樟腦會先運到大稻埕精製集散，再順著淡水河運往淡水港外銷！</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white border-2 border-[#4a3728]">
+            <div class="font-black text-[#2f7a44]">❓ 大量開墾山坡地種茶，可能帶來什麼環境挑戰？</div>
+            <p class="mt-1.5 text-[#4a3728]">雖然種茶提高了農民收入與國際知名度，但若<strong>過度開墾丘陵與山坡地</strong>，可能會導致<strong>水土流失與生態破壞</strong>喔！</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 互動小遊戲一：外銷貨物裝船大挑戰 -->
+      <div class="sketch-card p-5 sm:p-6 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <h3 class="text-lg sm:text-xl font-black flex items-center gap-2">
+            <span>🎮</span><span>互動小遊戲一：外銷貨物裝船大挑戰</span>
+          </h3>
+          <span id="g1-status" class="text-xs font-bold px-3 py-1 rounded-full bg-[#fff4d8] border-2 border-[#4a3728]">尚未過關</span>
+        </div>
+        <p class="text-sm text-[#6f5542] mb-4">請把下面 6 項貨物與地標，正確分類到「北部：淡水港」或「南部：安平、打狗港」，全對就能獲得「⚓ 貿易小船長」徽章！</p>
+        <div id="g1-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        <div id="g1-feedback" class="mt-3 text-sm font-bold text-[#357ab3] min-h-[22px]"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- 分頁三：🚂 牡丹社事件與臺灣建省（課本 P.66~69、習作 P.17） -->
+    <!-- ====================================================== -->
+    <section id="panel-defense" class="hidden space-y-6">
+      <!-- 互動時間軸：清帝國治臺態度轉變 -->
+      <div class="sketch-card p-5 sm:p-6 bg-gradient-to-b from-[#fff5ea] to-white">
+        <span class="px-3 py-1 rounded-full bg-[#f29d61] text-white text-xs font-bold border-2 border-[#4a3728]">課本 P.66~69 • 習作 P.17</span>
+        <h2 class="text-2xl font-black mt-2">⏳ 互動時間軸：清帝國治臺態度的轉變</h2>
+        <p class="text-sm text-[#6f5542] mt-1">點擊不同年份節點，觀察清帝國如何從前期的「消極限制」轉變為後期的「積極建設」！</p>
+
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+          <button onclick="selectTimeline(0)" id="tl-0" class="timeline-node active p-2.5 text-center">
+            <div class="text-xs font-bold text-[#6f5542]">前期・消極</div>
+            <div class="text-base font-black">1684年</div>
+            <div class="text-xs font-bold mt-0.5">納入版圖</div>
+          </button>
+          <button onclick="selectTimeline(1)" id="tl-1" class="timeline-node p-2.5 text-center">
+            <div class="text-xs font-bold text-[#6f5542]">前期・動亂</div>
+            <div class="text-base font-black">1786年</div>
+            <div class="text-xs font-bold mt-0.5">林爽文事件</div>
+          </button>
+          <button onclick="selectTimeline(2)" id="tl-2" class="timeline-node p-2.5 text-center">
+            <div class="text-xs font-bold text-[#357ab3]">後期・轉折</div>
+            <div class="text-base font-black">1860年代</div>
+            <div class="text-xs font-bold mt-0.5">開港通商</div>
+          </button>
+          <button onclick="selectTimeline(3)" id="tl-3" class="timeline-node p-2.5 text-center">
+            <div class="text-xs font-bold text-[#c96e2c]">後期・防務</div>
+            <div class="text-base font-black">1874年</div>
+            <div class="text-xs font-bold mt-0.5">牡丹社事件</div>
+          </button>
+          <button onclick="selectTimeline(4)" id="tl-4" class="timeline-node p-2.5 text-center">
+            <div class="text-xs font-bold text-[#c24b58]">後期・戰火</div>
+            <div class="text-base font-black">1884年</div>
+            <div class="text-xs font-bold mt-0.5">清法戰爭</div>
+          </button>
+          <button onclick="selectTimeline(5)" id="tl-5" class="timeline-node p-2.5 text-center">
+            <div class="text-xs font-bold text-[#2f7a44]">後期・積極</div>
+            <div class="text-base font-black">1885年</div>
+            <div class="text-xs font-bold mt-0.5">臺灣建省</div>
+          </button>
+        </div>
+
+        <div id="tl-detail" class="mt-4 p-4 rounded-2xl bg-[#fffcf0] border-2.5 border-[#4a3728] text-sm sm:text-base font-bold text-[#4a3728]">
+          📌 <strong>西元 1684 年（清帝國治臺前期－消極）：</strong>清帝國將臺灣納入版圖，擔心漢人移入發生反叛，因此頒布渡臺禁令限制人民來臺。
+        </div>
+      </div>
+
+      <!-- 4 張附自繪可愛 SVG 的知識圖鑑卡（編號 4~7） -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 圖鑑 4：牡丹社事件與沈葆楨 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c4')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-base sm:text-lg flex items-center gap-1.5"><span>🛡️</span><span>1874 牡丹社事件與沈葆楨</span></h3>
+            <span id="mark-c4" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- 可愛 SVG：沈葆楨與愛與和平連杯 -->
+            <svg viewBox="0 0 110 90" class="w-24 h-20 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#fff5ea]" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="55" cy="44" r="20" fill="#ffe0bd" stroke="#4a3728" stroke-width="2.2" />
+              <path d="M28 32 L55 15 L82 32 Z" fill="#6ca8d6" stroke="#4a3728" stroke-width="2.2" />
+              <circle cx="55" cy="14" r="4" fill="#ee8f99" stroke="#4a3728" stroke-width="1.8" />
+              <circle cx="48" cy="42" r="2" fill="#4a3728" />
+              <circle cx="62" cy="42" r="2" fill="#4a3728" />
+              <path d="M49 51 Q55 55 61 51" fill="none" stroke="#4a3728" stroke-width="2" stroke-linecap="round" />
+              <path d="M35 64 L75 64 L82 88 L28 88 Z" fill="#4a6b8a" stroke="#4a3728" stroke-width="2.2" />
+              <text x="55" y="81" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">沈葆楨</text>
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">日本出兵攻打臺灣南部部落，促使清帝國重新重視臺灣海防！點開看完整經過。</p>
+          </div>
+          <div id="body-c4" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>導火線（1871年）：</strong>一群琉球人遭遇颱風漂流到臺灣南端，因誤闖原住民部落而遭殺害。</p>
+            <p>• <strong>牡丹社事件（1874年）：</strong>日本以此為藉口，派兵登陸臺灣南部攻打牡丹社等部落。</p>
+            <p>• <strong>清帝國因應：</strong>驚覺外國野心，派<strong>沈葆楨</strong>來臺防範，調整治臺策略並積極加強南部海防與建設。</p>
+          </div>
+        </div>
+
+        <!-- 圖鑑 5：二鯤鯓砲臺與恆春城 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c5')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-base sm:text-lg flex items-center gap-1.5"><span>🏰</span><span>二鯤鯓砲臺與恆春城</span></h3>
+            <span id="mark-c5" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- 可愛 SVG：凹凸狀城牆與大砲 -->
+            <svg viewBox="0 0 110 90" class="w-24 h-20 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#eef7fc]" xmlns="http://www.w3.org/2000/svg">
+              <!-- 凹凸狀紅磚城牆 -->
+              <path d="M8 86 L8 42 L22 42 L22 52 L36 52 L36 42 L52 42 L52 52 L66 52 L66 42 L82 42 L82 52 L102 52 L102 86 Z" fill="#e07a5f" stroke="#4a3728" stroke-width="2.2" />
+              <!-- 城門洞 -->
+              <path d="M44 86 L44 68 Q55 58 66 68 L66 86 Z" fill="#4a3728" />
+              <!-- 西式大砲 -->
+              <rect x="24" y="26" width="38" height="12" rx="5" fill="#6b705c" stroke="#4a3728" stroke-width="2" transform="rotate(-12, 40, 32)" />
+              <circle cx="52" cy="39" r="5" fill="#4a3728" />
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">沈葆楨在臺南蓋了全臺第一座西式砲臺，也在屏東興建恆春城！點開看城牆的祕密。</p>
+          </div>
+          <div id="body-c5" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>二鯤鯓砲臺（又名億載金城）：</strong>位於臺南安平，是沈葆楨在臺修建的<strong>第一座西式砲臺</strong>，鞏固海防。</p>
+            <p>• <strong>恆春城：</strong>位於屏東恆春半島，加強臺灣南部的發展與軍事防禦。</p>
+            <p>• <strong>城牆小知識：</strong>城牆設計成<strong>凹凸狀</strong>，不僅能<strong>提供掩護</strong>，還能<strong>方便射擊槍砲</strong>、提升防禦效果！</p>
+          </div>
+        </div>
+
+        <!-- 圖鑑 6：1884清法戰爭與1885臺灣建省 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c6')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-base sm:text-lg flex items-center gap-1.5"><span>⚔️</span><span>1884 清法戰爭與臺灣建省</span></h3>
+            <span id="mark-c6" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- 可愛 SVG：劉銘傳頭像 -->
+            <svg viewBox="0 0 110 90" class="w-24 h-20 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#f1faf3]" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="55" cy="43" r="20" fill="#ffe0bd" stroke="#4a3728" stroke-width="2.2" />
+              <path d="M35 32 Q55 18 75 32 Z" fill="#4a3728" />
+              <circle cx="55" cy="21" r="4" fill="#f6d56f" stroke="#4a3728" stroke-width="1.8" />
+              <circle cx="48" cy="41" r="2" fill="#4a3728" />
+              <circle cx="62" cy="41" r="2" fill="#4a3728" />
+              <!-- 小鬍子 -->
+              <path d="M47 50 Q55 47 63 50" fill="none" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round" />
+              <path d="M35 63 L75 63 L82 88 L28 88 Z" fill="#7cb88b" stroke="#4a3728" stroke-width="2.2" />
+              <text x="55" y="81" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">劉銘傳</text>
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">法國軍艦進犯北臺灣，戰後臺灣正式獨立建省，開啟現代化新時代！</p>
+          </div>
+          <div id="body-c6" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>清法戰爭（1884年）：</strong>清帝國與法國發生戰爭，戰火波及臺灣的<strong>基隆與淡水</strong>，清帝國派<strong>劉銘傳</strong>來臺指揮作戰。</p>
+            <p>• <strong>臺灣建省（1885年）：</strong>戰後清帝國更重視臺灣的戰略地位，宣布將原本隸屬於<strong>福建省</strong>的臺灣獨立建省，並任命<strong>劉銘傳</strong>為<strong>首任臺灣巡撫</strong>。</p>
+          </div>
+        </div>
+
+        <!-- 圖鑑 7：劉銘傳的現代化建設 -->
+        <div class="sketch-card-soft p-4 cursor-pointer" onclick="toggleCard('c7')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-base sm:text-lg flex items-center gap-1.5"><span>🚂</span><span>劉銘傳的現代化建設</span></h3>
+            <span id="mark-c7" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- 可愛 SVG：電報機與鐵路 -->
+            <svg viewBox="0 0 110 90" class="w-24 h-20 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#fff9db]" xmlns="http://www.w3.org/2000/svg">
+              <!-- 電報機底座 -->
+              <rect x="16" y="54" width="78" height="22" rx="6" fill="#d9a05b" stroke="#4a3728" stroke-width="2.2" />
+              <rect x="28" y="34" width="32" height="20" rx="4" fill="#6ca8d6" stroke="#4a3728" stroke-width="2" />
+              <!-- 電報訊號閃電 -->
+              <path d="M72 16 L64 30 L74 30 L66 44" fill="none" stroke="#f29d61" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="55" y="69" text-anchor="middle" font-size="10" font-weight="900" fill="#4a3728">電報系統</text>
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">火車、輪船、電報通通引進，成為臺灣邁向現代化發展的起點！</p>
+          </div>
+          <div id="body-c7" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>興建鐵路：</strong>修建<strong>基隆到新竹</strong>之間的鐵路，並購入德國製火車頭「<strong>騰雲號</strong>」，讓臺灣交通更便利。</p>
+            <p>• <strong>新式輪船：</strong>購置新式輪船通行臺灣與中國兩岸，提升海運效率。</p>
+            <p>• <strong>架設電報系統：</strong>加速遠距離溝通，幫助清帝國即時掌握臺灣的<strong>軍事情報</strong>。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 互動小遊戲二：沈葆楨 vs 劉銘傳 建設分類賽 -->
+      <div class="sketch-card p-5 sm:p-6 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <h3 class="text-lg sm:text-xl font-black flex items-center gap-2">
+            <span>🎮</span><span>互動小遊戲二：沈葆楨 vs 劉銘傳 建設分類賽</span>
+          </h3>
+          <span id="g2-status" class="text-xs font-bold px-3 py-1 rounded-full bg-[#fff4d8] border-2 border-[#4a3728]">尚未過關</span>
+        </div>
+        <p class="text-sm text-[#6f5542] mb-4">請把下面 6 張歷史任務卡，正確分配給「沈葆楨」或「劉銘傳」，全對獲得「🚂 現代化工程師」徽章！</p>
+        <div id="g2-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        <div id="g2-feedback" class="mt-3 text-sm font-bold text-[#c96e2c] min-h-[22px]"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- 分頁四：🩺 西方人的足跡與影響（課本 P.70~75）              -->
+    <!-- ====================================================== -->
+    <section id="panel-western" class="hidden space-y-6">
+      <div class="sketch-card p-5 sm:p-6 bg-gradient-to-r from-[#fdf0f2] to-[#fffdf8]">
+        <span class="px-3 py-1 rounded-full bg-[#ee8f99] text-white text-xs font-bold border-2 border-[#4a3728]">課本 P.70~75</span>
+        <h2 class="text-2xl font-black mt-2">🩺 西方人來臺帶來的影響</h2>
+        <p class="text-sm sm:text-base text-[#6f5542] mt-1">
+          清帝國統治後期，允許外國人士來臺從事<strong>商業貿易、調查研究、外交工作、傳教</strong>四種活動。點開下方 4 位西方朋友的圖鑑卡，用「六何法」認識他們留給臺灣的珍貴資產！
+        </p>
+      </div>
+
+      <!-- 4 張人物圖鑑卡（編號 8~11） -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 圖鑑 8：斯文豪 -->
+        <div class="sketch-card-soft p-4 sm:p-5 cursor-pointer" onclick="toggleCard('c8')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-lg flex items-center gap-1.5"><span>🦎</span><span>斯文豪（英國・自然調查）</span></h3>
+            <span id="mark-c8" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3.5">
+            <!-- 自繪可愛 SVG：斯文豪拿放大鏡與青蛙攀蜥 -->
+            <svg viewBox="0 0 110 95" class="w-24 h-21 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#f1faf3]" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="44" cy="36" r="16" fill="#ffe0bd" stroke="#4a3728" stroke-width="2.2" />
+              <path d="M28 32 Q44 16 60 32" fill="#8c5a3c" stroke="#4a3728" stroke-width="2" />
+              <circle cx="39" cy="35" r="1.8" fill="#4a3728" />
+              <circle cx="49" cy="35" r="1.8" fill="#4a3728" />
+              <path d="M38 43 Q44 40 50 43" fill="none" stroke="#8c5a3c" stroke-width="2.5" stroke-linecap="round" />
+              <path d="M28 52 L60 52 L64 88 L24 88 Z" fill="#7cb88b" stroke="#4a3728" stroke-width="2.2" />
+              <!-- 放大鏡 -->
+              <circle cx="80" cy="40" r="13" fill="#e2f2fc" stroke="#4a3728" stroke-width="2.5" />
+              <line x1="71" y1="50" x2="62" y2="62" stroke="#4a3728" stroke-width="3.5" stroke-linecap="round" />
+              <!-- 可愛小赤蛙 -->
+              <ellipse cx="83" cy="76" rx="14" ry="10" fill="#f29d61" stroke="#4a3728" stroke-width="2" />
+              <circle cx="77" cy="68" r="3.5" fill="#ffffff" stroke="#4a3728" stroke-width="1.6" />
+              <circle cx="89" cy="68" r="3.5" fill="#ffffff" stroke="#4a3728" stroke-width="1.6" />
+              <circle cx="77" cy="68" r="1.2" fill="#4a3728" />
+              <circle cx="89" cy="68" r="1.2" fill="#4a3728" />
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">以外交官身分來臺卻超愛探索大自然，臺灣將近三分之一的鳥類都是他發現的！</p>
+          </div>
+          <div id="body-c8" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>事蹟：</strong>深入臺灣山林調查鳥類、蛙類與哺乳類動物，發表臺灣第一份鳥類紀錄《<strong>福爾摩沙鳥類誌</strong>》。</p>
+            <p>• <strong>以他命名的物種：</strong>斯文豪氏<strong>攀蜥</strong>、斯文豪氏<strong>赤蛙</strong>、斯文豪氏<strong>游蛇</strong>、斯文豪氏<strong>大蝸牛</strong>等。</p>
+            <div class="p-2 rounded-xl bg-[#f1faf3] border border-[#7cb88b] text-xs font-bold">
+              📌 六何法筆記：清末（何時）在打狗與淡水（何地），以外交官身分採集研究（為何），為臺灣留下珍貴生態紀錄（如何）！
+            </div>
+          </div>
+        </div>
+
+        <!-- 圖鑑 9：馬雅各 -->
+        <div class="sketch-card-soft p-4 sm:p-5 cursor-pointer" onclick="toggleCard('c9')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-lg flex items-center gap-1.5"><span>🏥</span><span>馬雅各（英國・南部醫療傳教）</span></h3>
+            <span id="mark-c9" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3.5">
+            <!-- 自繪可愛 SVG：馬雅各與西式醫館 -->
+            <svg viewBox="0 0 110 95" class="w-24 h-21 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#eef7fc]" xmlns="http://www.w3.org/2000/svg">
+              <!-- 西式醫館小屋 -->
+              <rect x="48" y="34" width="52" height="52" rx="4" fill="#ffffff" stroke="#4a3728" stroke-width="2.2" />
+              <polygon points="44,36 74,14 104,36" fill="#6ca8d6" stroke="#4a3728" stroke-width="2.2" />
+              <!-- 紅十字 -->
+              <rect x="70" y="44" width="8" height="22" rx="2" fill="#ee8f99" />
+              <rect x="63" y="51" width="22" height="8" rx="2" fill="#ee8f99" />
+              <!-- 醫師人物 -->
+              <circle cx="28" cy="40" r="14" fill="#ffe0bd" stroke="#4a3728" stroke-width="2.2" />
+              <circle cx="24" cy="39" r="1.6" fill="#4a3728" />
+              <circle cx="32" cy="39" r="1.6" fill="#4a3728" />
+              <path d="M24 46 Q28 49 32 46" fill="none" stroke="#4a3728" stroke-width="1.8" />
+              <path d="M14 54 L42 54 L45 86 L11 86 Z" fill="#5b6d82" stroke="#4a3728" stroke-width="2.2" />
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">在臺灣南部行醫傳教，創立全臺第一座西式醫館（今日臺南新樓醫院前身）！</p>
+          </div>
+          <div id="body-c9" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>事蹟：</strong>在臺南開設<strong>全臺第一座西式醫館</strong>，將醫病與傳教結合推展。</p>
+            <p>• <strong>克服挑戰：</strong>初期因文化差異與謠言遭到當地人排斥，但他不氣餒、努力救治無數病患，終於讓大家開始信任西醫與基督教福音。</p>
+            <div class="p-2 rounded-xl bg-[#eef7fc] border border-[#6ca8d6] text-xs font-bold">
+              💡 為什麼傳教士常結合醫療與辦學？因為能卸下民眾對外來信仰的警戒心，更容易贏得信任！
+            </div>
+          </div>
+        </div>
+
+        <!-- 圖鑑 10：馬偕 -->
+        <div class="sketch-card-soft p-4 sm:p-5 cursor-pointer" onclick="toggleCard('c10')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-lg flex items-center gap-1.5"><span>🦷</span><span>馬偕（加拿大・北部傳教與教育）</span></h3>
+            <span id="mark-c10" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3.5">
+            <!-- 自繪可愛 SVG：大鬍子馬偕與白牙齒/書院 -->
+            <svg viewBox="0 0 110 95" class="w-24 h-21 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#fff5ea]" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="42" cy="34" r="16" fill="#ffe0bd" stroke="#4a3728" stroke-width="2.2" />
+              <!-- 招牌大鬍子 -->
+              <path d="M27 38 Q42 64 57 38 Q54 50 42 54 Q30 50 27 38 Z" fill="#5c4033" stroke="#4a3728" stroke-width="2" />
+              <circle cx="37" cy="32" r="1.8" fill="#4a3728" />
+              <circle cx="47" cy="32" r="1.8" fill="#4a3728" />
+              <path d="M24 54 L60 54 L64 88 L20 88 Z" fill="#4a3728" />
+              <path d="M38 54 L42 64 L46 54 Z" fill="#ffffff" />
+              <!-- 可愛亮白牙齒圖示 -->
+              <path d="M72 34 Q72 22 82 22 Q86 22 88 26 Q90 22 94 22 Q104 22 104 34 Q104 52 96 58 Q92 58 90 48 L86 48 Q84 58 80 58 Q72 52 72 34 Z" fill="#ffffff" stroke="#4a3728" stroke-width="2.2" />
+              <text x="88" y="76" text-anchor="middle" font-size="10" font-weight="900" fill="#c96e2c">免費拔牙</text>
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">「一手聖經，一手拔牙鉗」！在淡水奉獻一生，創立理學堂大書院與淡水女學堂。</p>
+          </div>
+          <div id="body-c10" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>醫療與傳教：</strong>1872年抵淡水，以<strong>免費拔牙</strong>、贈送瘧疾特效藥、設<strong>滬尾偕醫館</strong>等方式行醫傳教，並引進胡蘿蔔、花椰菜等蔬菜種子。</p>
+            <p>• <strong>新式教育：</strong>創辦「<strong>理學堂大書院（牛津學堂）</strong>」傳授天文、地理、物理、醫學等現代科目；並設立「<strong>淡水女學堂</strong>」提倡女子教育！</p>
+            <p>• <strong>堅定不移：</strong>清法戰爭時，他設立的教堂遭民眾誤會燒毀，仍堅持在理學堂大書院授課。</p>
+            <div class="p-2.5 rounded-xl bg-[#fff3e0] border-2 border-[#f29d61] text-xs space-y-1">
+              <div class="font-black text-[#c96e2c]">❤️ 臺灣記得你：寧願燒盡，不願腐朽</div>
+              <p>馬偕學臺語、娶臺灣女子<strong>張聰明</strong>為妻、長眠於淡水，被讚譽為「真正的臺灣人」。政府更訂每年 <strong>6 月 2 日</strong>為「<strong>馬偕日</strong>」紀念他！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 圖鑑 11：巴克禮 -->
+        <div class="sketch-card-soft p-4 sm:p-5 cursor-pointer" onclick="toggleCard('c11')">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-black text-lg flex items-center gap-1.5"><span>📰</span><span>巴克禮（英國・神學院與報紙）</span></h3>
+            <span id="mark-c11" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-gray-100 border border-[#4a3728]">點擊收集</span>
+          </div>
+          <div class="flex items-center gap-3.5">
+            <!-- 自繪可愛 SVG：巴克禮與臺灣第一份報紙 -->
+            <svg viewBox="0 0 110 95" class="w-24 h-21 shrink-0 rounded-xl border-2 border-[#4a3728] bg-[#fdf0f2]" xmlns="http://www.w3.org/2000/svg">
+              <!-- 報紙 -->
+              <rect x="48" y="20" width="52" height="62" rx="5" fill="#fffdf5" stroke="#4a3728" stroke-width="2.2" />
+              <rect x="54" y="26" width="40" height="12" rx="2" fill="#f6d56f" stroke="#4a3728" stroke-width="1.5" />
+              <text x="74" y="35" text-anchor="middle" font-size="8" font-weight="900" fill="#4a3728">教會報</text>
+              <line x1="55" y1="46" x2="92" y2="46" stroke="#4a3728" stroke-width="2" />
+              <line x1="55" y1="55" x2="92" y2="55" stroke="#decbb3" stroke-width="2" />
+              <line x1="55" y1="64" x2="86" y2="64" stroke="#decbb3" stroke-width="2" />
+              <line x1="55" y1="73" x2="80" y2="73" stroke="#decbb3" stroke-width="2" />
+              <!-- 戴眼鏡的巴克禮 -->
+              <circle cx="26" cy="40" r="14" fill="#ffe0bd" stroke="#4a3728" stroke-width="2.2" />
+              <circle cx="21" cy="39" r="3.5" fill="none" stroke="#4a3728" stroke-width="1.6" />
+              <circle cx="31" cy="39" r="3.5" fill="none" stroke="#4a3728" stroke-width="1.6" />
+              <line x1="24.5" y1="39" x2="27.5" y2="39" stroke="#4a3728" stroke-width="1.4" />
+              <path d="M12 54 L40 54 L43 86 L9 86 Z" fill="#4a3728" />
+            </svg>
+            <p class="text-xs sm:text-sm text-[#6f5542]">引進現代印刷機、發行臺灣第一份報紙，在臺南生活長達 60 年的文化推手！</p>
+          </div>
+          <div id="body-c11" class="accordion-content mt-3 text-sm text-[#4a3728] space-y-1.5 border-t-2 border-dashed border-[#decbb3] pt-2.5">
+            <p>• <strong>教育與翻譯：</strong>1875年來臺，創辦<strong>臺南神學院</strong>，並將聖經翻譯成<strong>台語羅馬字</strong>，讓不識漢字的民眾也能閱讀。</p>
+            <p>• <strong>臺灣第一份報紙：</strong>從英國引進現代印刷技術，創辦臺灣教會公報社，於 <strong>1885 年</strong>在臺南發行臺灣第一份報紙《<strong>臺灣府城教會報</strong>》（今《臺灣教會公報》），記錄了珍貴的臺灣歷史與社會變遷。</p>
+            <p>• <strong>紀念景點：</strong>後人為感謝他的貢獻，在臺南設立了「<strong>巴克禮紀念公園</strong>」。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 互動小遊戲三：西方名人猜猜樂 -->
+      <div class="sketch-card p-5 sm:p-6 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <h3 class="text-lg sm:text-xl font-black flex items-center gap-2">
+            <span>🎮</span><span>互動小遊戲三：西方名人猜猜樂</span>
+          </h3>
+          <span id="g3-status" class="text-xs font-bold px-3 py-1 rounded-full bg-[#fff4d8] border-2 border-[#4a3728]">尚未過關</span>
+        </div>
+        <p class="text-sm text-[#6f5542] mb-4">閱讀下面的 6 道線索，猜猜看指的是哪一位西方朋友，全對就能獲得「🌍 文化交流大使」徽章！</p>
+        <div id="g3-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        <div id="g3-feedback" class="mt-3 text-sm font-bold text-[#c24b58] min-h-[22px]"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- 分頁五：📝 線上自我測驗（25題＋Google Classroom專區）      -->
+    <!-- ====================================================== -->
+    <section id="panel-quiz" class="hidden space-y-6">
+
+      <!-- 1️⃣ 測驗準備畫面 -->
+      <div id="quiz-prep" class="sketch-card p-5 sm:p-7 bg-white">
+        <div class="text-center mb-5">
+          <span class="px-3 py-1 rounded-full bg-[#6ca8d6] text-white text-xs font-bold border-2 border-[#4a3728]">Google Classroom 專用線上自我測驗</span>
+          <h2 class="text-2xl sm:text-3xl font-black mt-2">📝 開港通商與臺灣發展・自我挑戰賽</h2>
+          <p class="text-sm sm:text-base text-[#6f5542] mt-1">
+            每題作答後立即顯示白話小解析，交卷後按一下就能複製成績單貼到 Google Classroom 繳交！
+          </p>
+        </div>
+
+        <!-- 學生資料填寫區（與結算畫面雙向即時同步） -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#fff8e8] border-2.5 border-[#4a3728] shadow-[3px_3px_0_#decbb3] mb-6">
+          <h3 class="font-black text-base sm:text-lg mb-3 flex items-center gap-2">
+            <span>🎒</span><span>學生資料填寫（自動同步到成績單）</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label for="prep-class" class="block text-xs font-bold mb-1">班級（例：501）</label>
+              <input id="prep-class" type="text" placeholder="例：501" oninput="syncStudentInfo('prep')" class="sketch-input w-full px-3.5 py-2.5 text-base font-bold" />
+            </div>
+            <div>
+              <label for="prep-seat" class="block text-xs font-bold mb-1">座號（例：08）</label>
+              <input id="prep-seat" type="text" placeholder="例：08" oninput="syncStudentInfo('prep')" class="sketch-input w-full px-3.5 py-2.5 text-base font-bold" />
+            </div>
+            <div>
+              <label for="prep-name" class="block text-xs font-bold mb-1">姓名（例：王小明）</label>
+              <input id="prep-name" type="text" placeholder="請輸入姓名" oninput="syncStudentInfo('prep')" class="sketch-input w-full px-3.5 py-2.5 text-base font-bold" />
+            </div>
+          </div>
+          <p class="text-xs text-[#7c5d46] mt-2">💡 忘記填也沒關係，交卷後的結算畫面也可以隨時補填或修改喔！</p>
+        </div>
+
+        <!-- 測驗模式選擇 -->
+        <div class="mb-6">
+          <h3 class="font-black text-base sm:text-lg mb-3 flex items-center gap-2">
+            <span>🎯</span><span>選擇測驗模式</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="quiz-mode" value="all" checked class="peer sr-only" />
+              <div class="h-full p-4 rounded-2xl border-2.5 border-[#4a3728] bg-white peer-checked:bg-[#fff3e8] peer-checked:border-[#f29d61] peer-checked:shadow-[4px_4px_0_#f29d61] transition">
+                <div class="text-xs font-black text-[#c96e2c]">⭐ 正式作業推薦</div>
+                <div class="text-base font-black mt-1">🏆 綜合挑戰 25 題</div>
+                <div class="text-xs text-[#6f5542] mt-1">完整正式測驗，涵蓋本課所有課本與習作重點！</div>
+              </div>
+            </label>
+
+            <label class="cursor-pointer">
+              <input type="radio" name="quiz-mode" value="part1" class="peer sr-only" />
+              <div class="h-full p-4 rounded-2xl border-2.5 border-[#4a3728] bg-white peer-checked:bg-[#eef7fc] peer-checked:border-[#6ca8d6] peer-checked:shadow-[4px_4px_0_#6ca8d6] transition">
+                <div class="text-xs font-black text-[#357ab3]">分區練習 1</div>
+                <div class="text-base font-black mt-1">⛵ 開港通商（8題）</div>
+                <div class="text-xs text-[#6f5542] mt-1">四大港口、洋行領事館、大稻埕與經濟北移。</div>
+              </div>
+            </label>
+
+            <label class="cursor-pointer">
+              <input type="radio" name="quiz-mode" value="part2" class="peer sr-only" />
+              <div class="h-full p-4 rounded-2xl border-2.5 border-[#4a3728] bg-white peer-checked:bg-[#f1faf3] peer-checked:border-[#7cb88b] peer-checked:shadow-[4px_4px_0_#7cb88b] transition">
+                <div class="text-xs font-black text-[#2f7a44]">分區練習 2</div>
+                <div class="text-base font-black mt-1">🚂 防務與建省（8題）</div>
+                <div class="text-xs text-[#6f5542] mt-1">牡丹社事件、沈葆楨、清法戰爭、建省與劉銘傳。</div>
+              </div>
+            </label>
+
+            <label class="cursor-pointer">
+              <input type="radio" name="quiz-mode" value="part3" class="peer sr-only" />
+              <div class="h-full p-4 rounded-2xl border-2.5 border-[#4a3728] bg-white peer-checked:bg-[#fdf0f2] peer-checked:border-[#ee8f99] peer-checked:shadow-[4px_4px_0_#ee8f99] transition">
+                <div class="text-xs font-black text-[#c24b58]">分區練習 3</div>
+                <div class="text-base font-black mt-1">🩺 西方人影響（9題）</div>
+                <div class="text-xs text-[#6f5542] mt-1">斯文豪、馬雅各、馬偕與巴克禮的故事與貢獻。</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button onclick="startQuiz()" class="sketch-btn bg-[#7cb88b] text-white font-black text-lg px-10 py-3.5">
+            🚀 開始作答！
+          </button>
+        </div>
+      </div>
+
+      <!-- 2️⃣ 作答進行畫面 -->
+      <div id="quiz-active" class="hidden sketch-card p-5 sm:p-7 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span id="quiz-mode-badge" class="px-3 py-1 rounded-full bg-[#f6d56f]/50 border-2 border-[#4a3728] text-xs font-black">🏆 綜合挑戰 25 題</span>
+          <div class="flex items-center gap-3 text-sm font-black">
+            <span id="quiz-progress-text" class="text-[#4a3728]">第 1 / 25 題</span>
+            <span id="quiz-score-live" class="px-2.5 py-0.5 rounded-full bg-[#e6f6ea] border border-[#4a3728] text-[#2f7a44]">答對 0 題</span>
+          </div>
+        </div>
+        <div class="w-full h-3.5 bg-[#fff6e0] rounded-full border-2 border-[#4a3728] overflow-hidden mb-5">
+          <div id="quiz-progress-bar" class="h-full bg-[#f29d61] transition-all duration-300" style="width: 4%;"></div>
+        </div>
+
+        <div class="mb-4">
+          <span id="q-tag" class="inline-block px-2.5 py-0.5 rounded-lg bg-[#6ca8d6]/25 border border-[#4a3728] text-xs font-bold mb-2">題型</span>
+          <h3 id="q-stem" class="text-lg sm:text-xl font-black leading-relaxed text-[#4a3728] whitespace-pre-line"></h3>
+        </div>
+
+        <div id="q-options" class="space-y-3"></div>
+
+        <!-- 即時白話小解析 -->
+        <div id="q-feedback" class="hidden mt-5 p-4 rounded-2xl border-2.5 border-[#4a3728] animate-pop">
+          <div id="q-feedback-title" class="text-lg font-black mb-1"></div>
+          <p id="q-feedback-exp" class="text-sm sm:text-base leading-relaxed text-[#4a3728]"></p>
+          <div class="mt-4 flex justify-end">
+            <button id="btn-next-q" onclick="nextQuestion()" class="sketch-btn bg-[#f29d61] text-white font-black px-6 py-2.5 text-base">
+              下一題 ➜
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3️⃣ 交卷結算畫面（Google Classroom 專用） -->
+      <div id="quiz-result" class="hidden space-y-6">
+        <div class="sketch-card p-5 sm:p-7 bg-gradient-to-b from-[#fffaf0] to-white text-center animate-pop">
+          <div id="res-medal" class="text-6xl mb-1">🏆</div>
+          <div id="res-stars" class="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
+          <h2 id="res-title" class="text-2xl sm:text-3xl font-black text-[#4a3728]">太棒了！完成挑戰！</h2>
+          <p id="res-subtitle" class="text-sm sm:text-base text-[#6f5542] mt-1"></p>
+
+          <!-- 成績重點四格 -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-left">
+            <div class="p-3.5 rounded-2xl bg-white border-2 border-[#4a3728]">
+              <div class="text-xs font-bold text-[#6f5542]">總分（滿分100）</div>
+              <div id="res-score" class="text-3xl font-black text-[#e0703a] mt-0.5">100 分</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white border-2 border-[#4a3728]">
+              <div class="text-xs font-bold text-[#6f5542]">答對題數</div>
+              <div id="res-correct" class="text-2xl font-black text-[#2f7a44] mt-1">25 / 25</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white border-2 border-[#4a3728]">
+              <div class="text-xs font-bold text-[#6f5542]">錯題題號</div>
+              <div id="res-wrong-nums" class="text-sm font-black text-[#4a3728] mt-1.5 break-words">無（全部答對！🎉）</div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white border-2 border-[#4a3728]">
+              <div class="text-xs font-bold text-[#6f5542]">完成時間</div>
+              <div id="res-time" class="text-xs sm:text-sm font-black text-[#357ab3] mt-1.5"></div>
+            </div>
+          </div>
+
+          <!-- Google Classroom 專用繳交專區 -->
+          <div class="mt-6 p-4 sm:p-5 rounded-2xl bg-[#eef7fc] border-2.5 border-[#4a3728] shadow-[4px_4px_0_#decbb3] text-left">
+            <h3 class="font-black text-base sm:text-lg flex items-center gap-2 mb-3 text-[#2b6ea3]">
+              <span>📋</span><span>Google Classroom 作業繳交專區</span>
+            </h3>
+
+            <!-- 與準備畫面雙向即時同步的學生資料欄位 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+              <div>
+                <label for="res-class" class="block text-xs font-bold mb-1">班級（可即時補填/修改）</label>
+                <input id="res-class" type="text" placeholder="例：501" oninput="syncStudentInfo('res')" class="sketch-input w-full px-3 py-2 text-sm sm:text-base font-bold" />
+              </div>
+              <div>
+                <label for="res-seat" class="block text-xs font-bold mb-1">座號</label>
+                <input id="res-seat" type="text" placeholder="例：08" oninput="syncStudentInfo('res')" class="sketch-input w-full px-3 py-2 text-sm sm:text-base font-bold" />
+              </div>
+              <div>
+                <label for="res-name" class="block text-xs font-bold mb-1">姓名</label>
+                <input id="res-name" type="text" placeholder="請輸入姓名" oninput="syncStudentInfo('res')" class="sketch-input w-full px-3 py-2 text-sm sm:text-base font-bold" />
+              </div>
+            </div>
+
+            <!-- 成績單即時預覽 -->
+            <label for="report-preview" class="block text-xs font-bold mb-1 text-[#4a3728]">成績單文字預覽（修改上方資料會即時更新）：</label>
+            <textarea id="report-preview" readonly rows="6" class="w-full p-3.5 rounded-xl bg-white border-2 border-[#4a3728] text-xs sm:text-sm font-mono leading-relaxed text-[#4a3728] focus:outline-none"></textarea>
+
+            <!-- 一鍵複製按鈕 -->
+            <div class="mt-4">
+              <button id="btn-copy-report" onclick="copyGradeReport()" class="sketch-btn w-full bg-[#f29d61] text-white font-black text-base sm:text-lg py-3.5 px-6 flex items-center justify-center gap-2">
+                <span>📋</span><span>一鍵複製成績單文字（貼到 Google Classroom 繳交）</span>
+              </button>
+            </div>
+            <p id="copy-hint" class="text-xs sm:text-sm font-bold text-[#2f7a44] mt-2 text-center hidden">
+              ✅ 已複製！請回到 Google Classroom 貼上繳交！
+            </p>
+          </div>
+
+          <div class="mt-6 flex flex-wrap justify-center gap-3">
+            <button onclick="resetQuizToPrep()" class="sketch-btn bg-[#7cb88b] text-white font-black px-6 py-2.5 text-base">
+              🔄 重新挑戰
+            </button>
+            <button onclick="switchTab('map')" class="sketch-btn bg-white text-[#4a3728] font-black px-6 py-2.5 text-base">
+              🗺️ 回到學習地圖
+            </button>
+          </div>
+        </div>
+
+        <!-- 專屬錯題複習清單 -->
+        <div class="sketch-card p-5 sm:p-6 bg-white">
+          <h3 class="text-xl font-black mb-3 flex items-center gap-2">
+            <span>📖</span><span>專屬錯題複習清單</span>
+          </h3>
+          <div id="wrong-review-list" class="space-y-3"></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="max-w-5xl mx-auto px-4 mt-10 text-center text-xs text-[#7c5d46]">
+    115學年度國小五年級上學期社會 • 第3單元第2課〈開港通商為什麼改變了臺灣的發展？〉自主學習與線上自我測驗
+  </footer>
+
+  <!-- ====================================================== -->
+  <!-- JavaScript 互動邏輯與 25 題完整題庫                       -->
+  <!-- ====================================================== -->
+  <script>
+    // --------------------------------------------------
+    // 1. 柔和提示音效（Web Audio API）
+    // --------------------------------------------------
+    function playChime(type = 'success') {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        const tone = (freq, start, dur, vol = 0.07) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(vol, start);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + dur);
+        };
+        if (type === 'success') {
+          tone(523.25, now, 0.13);
+          tone(659.25, now + 0.09, 0.16);
+          tone(783.99, now + 0.18, 0.24);
+        } else if (type === 'wrong') {
+          tone(270, now, 0.16, 0.06);
+          tone(215, now + 0.13, 0.2, 0.06);
+        } else {
+          tone(587.33, now, 0.11, 0.05);
+        }
+      } catch (e) {}
+    }
+
+    // --------------------------------------------------
+    // 2. Toast 提示框（絕不使用 alert）
+    // --------------------------------------------------
+    let toastTimer = null;
+    function showToast(msg) {
+      const box = document.getElementById('toast-box');
+      document.getElementById('toast-text').textContent = msg;
+      box.classList.remove('opacity-0', 'translate-y-4');
+      box.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.add('opacity-0', 'translate-y-4');
+        box.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    // --------------------------------------------------
+    // 3. localStorage 狀態管理（11張圖鑑卡、3枚徽章、最高分、學生資料）
+    // --------------------------------------------------
+    const TOTAL_CARDS = 11;
+    const STORAGE_KEY = 'social_5a_u3_l2_progress_v1';
+    const STUDENT_KEY = 'social_5a_u3_l2_student_v1';
+
+    let progressState = {
+      cards: {},
+      games: { g1: false, g2: false, g3: false },
+      bestScore: null
+    };
+
+    let studentInfo = {
+      className: '',
+      seatNo: '',
+      name: ''
+    };
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          progressState = {
+            cards: parsed.cards || {},
+            games: { g1: false, g2: false, g3: false, ...(parsed.games || {}) },
+            bestScore: parsed.bestScore ?? null
+          };
+        }
+        const savedStudent = localStorage.getItem(STUDENT_KEY);
+        if (savedStudent) {
+          studentInfo = { className: '', seatNo: '', name: '', ...JSON.parse(savedStudent) };
+        }
+      } catch (e) {}
+      applyStudentInputs();
+      updateDashboardUI();
+      restoreCardMarks();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+      } catch (e) {}
+      updateDashboardUI();
+    }
+
+    function saveStudentInfo() {
+      try {
+        localStorage.setItem(STUDENT_KEY, JSON.stringify(studentInfo));
+      } catch (e) {}
+    }
+
+    function applyStudentInputs() {
+      const map = [
+        ['prep-class', 'res-class', 'className'],
+        ['prep-seat', 'res-seat', 'seatNo'],
+        ['prep-name', 'res-name', 'name']
+      ];
+      map.forEach(([pId, rId, key]) => {
+        const pEl = document.getElementById(pId);
+        const rEl = document.getElementById(rId);
+        if (pEl) pEl.value = studentInfo[key];
+        if (rEl) rEl.value = studentInfo[key];
+      });
+    }
+
+    function syncStudentInfo(source) {
+      if (source === 'prep') {
+        studentInfo.className = document.getElementById('prep-class').value.trim();
+        studentInfo.seatNo = document.getElementById('prep-seat').value.trim();
+        studentInfo.name = document.getElementById('prep-name').value.trim();
+        document.getElementById('res-class').value = studentInfo.className;
+        document.getElementById('res-seat').value = studentInfo.seatNo;
+        document.getElementById('res-name').value = studentInfo.name;
+      } else {
+        studentInfo.className = document.getElementById('res-class').value.trim();
+        studentInfo.seatNo = document.getElementById('res-seat').value.trim();
+        studentInfo.name = document.getElementById('res-name').value.trim();
+        document.getElementById('prep-class').value = studentInfo.className;
+        document.getElementById('prep-seat').value = studentInfo.seatNo;
+        document.getElementById('prep-name').value = studentInfo.name;
+      }
+      saveStudentInfo();
+      if (lastQuizResult) updateReportPreview();
+    }
+
+    function updateDashboardUI() {
+      const doneCards = Object.keys(progressState.cards).filter(k => progressState.cards[k]).length;
+      document.getElementById('stat-cards-text').textContent = `${doneCards} / ${TOTAL_CARDS}`;
+      document.getElementById('stat-cards-bar').style.width = `${Math.round((doneCards / TOTAL_CARDS) * 100)}%`;
+
+      const doneGames = ['g1', 'g2', 'g3'].filter(k => progressState.games[k]).length;
+      document.getElementById('stat-games-text').textContent = `${doneGames} / 3`;
+
+      const badgeColors = {
+        g1: ['bg-[#6ca8d6]', 'text-white'],
+        g2: ['bg-[#f29d61]', 'text-white'],
+        g3: ['bg-[#ee8f99]', 'text-white']
+      };
+      ['g1', 'g2', 'g3'].forEach(g => {
+        const el = document.getElementById(`badge-${g}`);
+        if (progressState.games[g]) {
+          el.classList.remove('bg-gray-100', 'text-gray-400');
+          el.classList.add(...badgeColors[g]);
+        }
+      });
+
+      const bestEl = document.getElementById('stat-best-score');
+      bestEl.textContent = progressState.bestScore !== null ? `${progressState.bestScore} 分` : '尚未挑戰';
+    }
+
+    function markCardCollected(cardId) {
+      if (!progressState.cards[cardId]) {
+        progressState.cards[cardId] = true;
+        saveState();
+        playChime('click');
+        showToast('✨ 成功收集一張知識圖鑑卡！');
+      }
+      const mark = document.getElementById(`mark-${cardId}`);
+      if (mark) {
+        mark.textContent = '已收集 ✓';
+        mark.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#7cb88b] text-white border border-[#4a3728]';
+      }
+    }
+
+    function restoreCardMarks() {
+      Object.keys(progressState.cards).forEach(cardId => {
+        if (progressState.cards[cardId]) {
+          const mark = document.getElementById(`mark-${cardId}`);
+          if (mark) {
+            mark.textContent = '已收集 ✓';
+            mark.className = 'text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#7cb88b] text-white border border-[#4a3728]';
+          }
+        }
+      });
+    }
+
+    // --------------------------------------------------
+    // 4. 分頁切換與卡片展開
+    // --------------------------------------------------
+    function switchTab(tabName) {
+      const tabs = ['map', 'ports', 'defense', 'western', 'quiz'];
+      tabs.forEach(t => {
+        document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== tabName);
+        document.getElementById(`tab-${t}`).classList.toggle('active', t === tabName);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleCard(cardId) {
+      const body = document.getElementById(`body-${cardId}`);
+      if (body) body.classList.toggle('open');
+      markCardCollected(cardId);
+    }
+
+    function toggleSimple(elId) {
+      const el = document.getElementById(elId);
+      if (el) el.classList.toggle('open');
+    }
+
+    // --------------------------------------------------
+    // 5. 分頁二：互動 SVG 港口地圖泡泡
+    // --------------------------------------------------
+    const MAP_INFO = {
+      keelung: {
+        title: '⚓ 雞籠（今基隆）',
+        body: '1860年代開港通商的北部港口之一，位居北臺灣門戶，外銷北部茶葉、樟腦與煤礦。1884年清法戰爭時，法軍也曾進犯這裡。'
+      },
+      tamsui: {
+        title: '⚓ 淡水港（北部最重要出口港）',
+        body: '北部茶葉與樟腦的主要出口港口！1869年英商約翰·陶德就是從淡水港將臺灣烏龍茶運往美國，打開臺灣茶的國際知名度。'
+      },
+      dadaocheng: {
+        title: '🏮 大稻埕（今臺北市大同區）',
+        body: '雖然大稻埕自己沒有種茶，但因臨近淡水港、水運便利，北部的茶葉與樟腦都運來此地精製與集散，成為繁榮的新興商業市街！'
+      },
+      tea: {
+        title: '🍃 北部特產：茶葉與樟腦',
+        body: '臺灣茶葉是開港後最大宗的外銷商品，樟腦則用於醫藥、香料與工業原料。因產地集中於北部丘陵山區，帶動經濟重心由南往北轉移！'
+      },
+      anping: {
+        title: '⚓ 安平（今臺南市）',
+        body: '南部重要通商港口，主要出口南部盛產的蔗糖！德國商人在此設立「德國東興洋行」，專門經營砂糖與樟腦貿易。'
+      },
+      takao: {
+        title: '⚓ 打狗（今高雄市）',
+        body: '南部另一座重要通商港口，也是蔗糖的主要出口港。英國在這裡設立了「打狗英國領事館」，是全臺灣第一個外國正式領事館！'
+      },
+      sugar: {
+        title: '🍬 南部特產：蔗糖',
+        body: '臺灣南部平原氣候適合種甘蔗，蔗糖外銷歷史悠久，是開港通商後臺灣第二大宗外銷商品，主要從安平與打狗出口！'
+      }
+    };
+
+    function showMapBubble(key) {
+      const info = MAP_INFO[key];
+      if (!info) return;
+      const box = document.getElementById('map-bubble');
+      document.getElementById('map-bubble-title').textContent = info.title;
+      document.getElementById('map-bubble-body').textContent = info.body;
+      box.classList.remove('animate-pop');
+      void box.offsetWidth;
+      box.classList.add('animate-pop');
+      playChime('click');
+    }
+
+    // --------------------------------------------------
+    // 6. 互動小遊戲一：外銷貨物裝船大挑戰
+    // --------------------------------------------------
+    const g1Data = [
+      { label: '🍃 茶葉', answer: 'north', solved: false },
+      { label: '🌲 樟腦', answer: 'north', solved: false },
+      { label: '🍬 蔗糖', answer: 'south', solved: false },
+      { label: '🏛️ 德國東興洋行', answer: 'south', solved: false },
+      { label: '🇬🇧 打狗英國領事館', answer: 'south', solved: false },
+      { label: '🏮 大稻埕集散地', answer: 'north', solved: false }
+    ];
+
+    function renderG1() {
+      const container = document.getElementById('g1-list');
+      container.innerHTML = g1Data.map((item, idx) => {
+        if (item.solved) {
+          const dest = item.answer === 'north' ? '北部：淡水港' : '南部：安平、打狗港';
+          return `
+            <div class="p-3.5 rounded-2xl border-2 border-[#2f7a44] bg-[#e6f6ea] text-center">
+              <div class="text-base font-black">${item.label}</div>
+              <div class="text-xs font-bold text-[#2f7a44] mt-1.5">✅ 對應：${dest}</div>
+            </div>
+          `;
+        }
+        return `
+          <div class="p-3.5 rounded-2xl border-2 border-[#4a3728] bg-[#fffdf8] text-center flex flex-col justify-between gap-2.5">
+            <div class="text-base font-black">${item.label}</div>
+            <div class="flex flex-col gap-1.5">
+              <button onclick="answerG1(${idx}, 'north')" class="py-1.5 px-2 rounded-xl border-2 border-[#4a3728] bg-[#eef7fc] hover:bg-[#6ca8d6] hover:text-white text-xs font-black transition">
+                ⬆️ 北部：淡水港
+              </button>
+              <button onclick="answerG1(${idx}, 'south')" class="py-1.5 px-2 rounded-xl border-2 border-[#4a3728] bg-[#fff5ea] hover:bg-[#f29d61] hover:text-white text-xs font-black transition">
+                ⬇️ 南部：安平、打狗港
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function answerG1(idx, choice) {
+      const item = g1Data[idx];
+      if (item.answer === choice) {
+        item.solved = true;
+        playChime('success');
+        renderG1();
+        if (g1Data.every(d => d.solved)) {
+          document.getElementById('g1-feedback').textContent = '🎉 全部裝船成功！你獲得了「⚓ 貿易小船長」徽章！';
+          const status = document.getElementById('g1-status');
+          status.textContent = '已過關 🏅';
+          status.className = 'text-xs font-bold px-3 py-1 rounded-full bg-[#6ca8d6] text-white border-2 border-[#4a3728]';
+          progressState.games.g1 = true;
+          saveState();
+          showToast('🏅 恭喜獲得「⚓ 貿易小船長」徽章！');
+        } else {
+          document.getElementById('g1-feedback').textContent = `✅ 答對了！「${item.label}」分類正確！`;
+        }
+      } else {
+        playChime('wrong');
+        document.getElementById('g1-feedback').textContent = '💡 小提示：北部（大稻埕、淡水）負責茶葉與樟腦；南部（安平、打狗）負責蔗糖，東興洋行在臺南、英國領事館在高雄喔！';
+      }
+    }
+
+    // --------------------------------------------------
+    // 7. 分頁三：互動時間軸
+    // --------------------------------------------------
+    const TIMELINE_DATA = [
+      '📌 <strong>西元 1684 年（清帝國治臺前期－消極）：</strong>清帝國將臺灣納入版圖，擔心漢人移入發生反叛，因此頒布渡臺禁令限制人民來臺。',
+      '📌 <strong>西元 1786 年（清帝國治臺前期－動亂）：</strong>因官員貪汙與管理不當，爆發規模最大的民變「林爽文事件」，清帝國派兵鎮壓。',
+      '📌 <strong>西元 1860 年代（清帝國治臺後期－轉折）：</strong>西方國家迫使清帝國開放雞籠、淡水、安平、打狗通商，外商設立洋行與領事館，經濟重心北移。',
+      '📌 <strong>西元 1874 年（清帝國治臺後期－重視防務）：</strong>日本藉口琉球人遇害出兵「牡丹社事件」，清帝國派<strong>沈葆楨</strong>來臺修建二鯤鯓砲臺與恆春城。',
+      '📌 <strong>西元 1884 年（清帝國治臺後期－戰火）：</strong>「清法戰爭」戰火波及基隆與淡水，清帝國派遣<strong>劉銘傳</strong>來臺指揮作戰。',
+      '📌 <strong>西元 1885 年（清帝國治臺後期－積極現代化）：</strong>清帝國宣布<strong>臺灣建省</strong>，劉銘傳任首任巡撫，修建鐵路、購置輪船、架設電報，邁向現代化！'
+    ];
+
+    function selectTimeline(idx) {
+      for (let i = 0; i < TIMELINE_DATA.length; i++) {
+        document.getElementById(`tl-${i}`).classList.toggle('active', i === idx);
+      }
+      document.getElementById('tl-detail').innerHTML = TIMELINE_DATA[idx];
+      playChime('click');
+    }
+
+    // --------------------------------------------------
+    // 8. 互動小遊戲二：沈葆楨 vs 劉銘傳 建設分類賽
+    // --------------------------------------------------
+    const g2Data = [
+      { text: '因為「日本」出兵攻打牡丹社而奉派來臺', answer: 'shen', solved: false },
+      { text: '因為「法國」出兵引發清法戰爭而來臺指揮作戰', answer: 'liu', solved: false },
+      { text: '在臺南興建全臺第一座西式砲臺「二鯤鯓砲臺（億載金城）」', answer: 'shen', solved: false },
+      { text: '在屏東興建「恆春城」，加強臺灣南部軍事防禦', answer: 'shen', solved: false },
+      { text: '擔任首任臺灣巡撫，修建「基隆到新竹」鐵路（騰雲號）', answer: 'liu', solved: false },
+      { text: '架設「電報系統」並購置新式輪船，加速情報傳遞', answer: 'liu', solved: false }
+    ];
+
+    function renderG2() {
+      const container = document.getElementById('g2-list');
+      container.innerHTML = g2Data.map((item, idx) => {
+        if (item.solved) {
+          const who = item.answer === 'shen' ? '🛡️ 沈葆楨' : '🚂 劉銘傳';
+          return `
+            <div class="p-3.5 rounded-2xl border-2 border-[#2f7a44] bg-[#e6f6ea]">
+              <p class="text-sm font-bold text-[#4a3728]">${idx + 1}. ${item.text}</p>
+              <div class="mt-1.5 text-xs font-black text-[#2f7a44]">✅ 正確歸屬：${who}</div>
+            </div>
+          `;
+        }
+        return `
+          <div class="p-3.5 rounded-2xl border-2 border-[#4a3728] bg-[#fffdf8] flex flex-col justify-between gap-2.5">
+            <p class="text-sm font-bold text-[#4a3728]">${idx + 1}. ${item.text}</p>
+            <div class="flex gap-2">
+              <button onclick="answerG2(${idx}, 'shen')" class="flex-1 py-1.5 rounded-xl border-2 border-[#4a3728] bg-[#fff5ea] hover:bg-[#f29d61] hover:text-white text-xs font-black transition">
+                🛡️ 沈葆楨
+              </button>
+              <button onclick="answerG2(${idx}, 'liu')" class="flex-1 py-1.5 rounded-xl border-2 border-[#4a3728] bg-[#f1faf3] hover:bg-[#7cb88b] hover:text-white text-xs font-black transition">
+                🚂 劉銘傳
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function answerG2(idx, choice) {
+      const item = g2Data[idx];
+      if (item.answer === choice) {
+        item.solved = true;
+        playChime('success');
+        renderG2();
+        if (g2Data.every(d => d.solved)) {
+          document.getElementById('g2-feedback').textContent = '🎉 全部答對！你把沈葆楨與劉銘傳分得一清二楚，獲得「🚂 現代化工程師」徽章！';
+          const status = document.getElementById('g2-status');
+          status.textContent = '已過關 🏅';
+          status.className = 'text-xs font-bold px-3 py-1 rounded-full bg-[#f29d61] text-white border-2 border-[#4a3728]';
+          progressState.games.g2 = true;
+          saveState();
+          showToast('🏅 恭喜獲得「🚂 現代化工程師」徽章！');
+        } else {
+          document.getElementById('g2-feedback').textContent = '✅ 分配正確！繼續挑戰下一張任務卡！';
+        }
+      } else {
+        playChime('wrong');
+        document.getElementById('g2-feedback').textContent = '💡 提示：沈葆楨＝日本牡丹社事件、砲臺、恆春城；劉銘傳＝清法戰爭、首任巡撫、鐵路、電報、輪船！';
+      }
+    }
+
+    // --------------------------------------------------
+    // 9. 互動小遊戲三：西方名人猜猜樂
+    // --------------------------------------------------
+    const g3Data = [
+      { clue: '我是英國外交官，深入臺灣山林調查動植物，發表《福爾摩沙鳥類誌》，攀蜥、赤蛙都以我命名！', answer: '斯文豪', solved: false },
+      { clue: '我在臺南開設全臺第一座西式醫館，初期曾受謠言排斥，最後用醫術贏得民眾信任！', answer: '馬雅各', solved: false },
+      { clue: '我來自加拿大，在淡水免費替人拔牙，還創立理學堂大書院與淡水女學堂！', answer: '馬偕', solved: false },
+      { clue: '我創辦臺南神學院，把聖經翻譯成台語羅馬字，並於1885年發行臺灣第一份報紙！', answer: '巴克禮', solved: false },
+      { clue: '我的座右銘是「寧願燒盡，不願腐朽」，娶了臺灣妻子張聰明，每年6月2日是我的紀念日！', answer: '馬偕', solved: false },
+      { clue: '我在臺灣生活了60年，從英國引進現代印刷機，後人設立了「紀念公園」感念我的貢獻！', answer: '巴克禮', solved: false }
+    ];
+    const g3Choices = ['斯文豪', '馬雅各', '馬偕', '巴克禮'];
+
+    function renderG3() {
+      const container = document.getElementById('g3-list');
+      container.innerHTML = g3Data.map((item, idx) => {
+        if (item.solved) {
+          return `
+            <div class="p-3.5 rounded-2xl border-2 border-[#2f7a44] bg-[#e6f6ea]">
+              <p class="text-sm font-bold text-[#4a3728]">${idx + 1}. ${item.clue}</p>
+              <div class="mt-2 text-xs font-black text-[#2f7a44]">✅ 答案就是：${item.answer}！</div>
+            </div>
+          `;
+        }
+        return `
+          <div class="p-3.5 rounded-2xl border-2 border-[#4a3728] bg-[#fffdf8] flex flex-col justify-between gap-2.5">
+            <p class="text-sm font-bold text-[#4a3728]">${idx + 1}. ${item.clue}</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+              ${g3Choices.map(name => `
+                <button onclick="answerG3(${idx}, '${name}')" class="py-1.5 rounded-xl border-2 border-[#4a3728] bg-white hover:bg-[#ee8f99] hover:text-white text-xs font-black transition">
+                  ${name}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function answerG3(idx, choice) {
+      const item = g3Data[idx];
+      if (item.answer === choice) {
+        item.solved = true;
+        playChime('success');
+        renderG3();
+        if (g3Data.every(d => d.solved)) {
+          document.getElementById('g3-feedback').textContent = '🎉 全數猜中！你獲得了「🌍 文化交流大使」徽章！';
+          const status = document.getElementById('g3-status');
+          status.textContent = '已過關 🏅';
+          status.className = 'text-xs font-bold px-3 py-1 rounded-full bg-[#ee8f99] text-white border-2 border-[#4a3728]';
+          progressState.games.g3 = true;
+          saveState();
+          showToast('🏅 恭喜獲得「🌍 文化交流大使」徽章！');
+        } else {
+          document.getElementById('g3-feedback').textContent = `✅ 猜對了！正是「${item.answer}」！`;
+        }
+      } else {
+        playChime('wrong');
+        document.getElementById('g3-feedback').textContent = '💡 再看看上面的 4 張人物圖鑑卡提示，再猜一次吧！';
+      }
+    }
+
+    // --------------------------------------------------
+    // 10. 25 題完整素養題庫（課本 P.64~75 & 習作 P.16~17）
+    // --------------------------------------------------
+    const QUESTION_BANK = [
+      // === 分區 1：開港通商與經濟北移（第 1~8 題） ===
+      {
+        id: 1,
+        tag: '⛵ 開港通商 • 四大港口',
+        stem: '西元 1860 年代，西方國家迫使清帝國開放臺灣四個通商港口，讓西方勢力再度進入臺灣。請問這四個港口分別是？',
+        options: [
+          '雞籠（基隆）、淡水、安平（臺南）、打狗（高雄）',
+          '府城、鹿港、艋舺、蘇澳',
+          '基隆、臺中、嘉義、花蓮',
+          '淡水、新竹、澎湖、恆春'
+        ],
+        answer: 0,
+        exp: '1860年代清帝國被迫開放的四個通商港口為：北部的雞籠（今基隆）、淡水，以及南部的安平（今臺南）、打狗（今高雄）。'
+      },
+      {
+        id: 2,
+        tag: '🏛️ 領事館與洋行',
+        stem: '開港通商後，西方國家在臺灣設立了「領事館」與「洋行」。關於這兩者的功能與實例，下列敘述何者「正確」？',
+        options: [
+          '領事館是商人買賣茶葉的商店；洋行是外國官員辦公的場所',
+          '高雄「打狗英國領事館」是官員辦公與接待使節處，也是臺灣第一個外國正式領事館',
+          '臺南「德國東興洋行」主要是為了在臺灣興建鐵路而設立',
+          '領事館與洋行只允許設立在臺北，南部完全沒有'
+        ],
+        answer: 1,
+        exp: '領事館是外國官員辦公處（如打狗英國領事館），洋行則是外國商人進行商品貿易的地方（如臺南德國東興洋行以出口糖為主）。'
+      },
+      {
+        id: 3,
+        tag: '📦 外銷商品與港口配對',
+        stem: '臺灣開港通商後，西方商人將臺灣三大物產外銷到世界各國。請問這三大外銷商品與主要出口港口的配對，哪一項是正確的？',
+        options: [
+          '茶葉與樟腦由安平出口；蔗糖由淡水出口',
+          '茶葉與樟腦由淡水出口；蔗糖由安平、打狗出口',
+          '稻米與鹿皮由雞籠出口；布匹由打狗出口',
+          '茶葉與藥材由打狗出口；樟腦由安平出口'
+        ],
+        answer: 1,
+        exp: '開港後三大外銷商品為茶葉、糖、樟腦。茶葉與樟腦產於北部，多由淡水出口；蔗糖產於南部，主要由安平與打狗出口。'
+      },
+      {
+        id: 4,
+        tag: '🏮 習作重點 • 大稻埕崛起',
+        stem: '大稻埕（今臺北市大同區）本身並沒有種植茶樹，但為什麼開港通商後卻成為茶商聚集、商業興盛的新興市街？',
+        options: [
+          '因為大稻埕是全臺灣最早建立的古代城池',
+          '因為大稻埕臨近淡水港、水運便利，北部的茶葉與樟腦都會運到此地集散再運往淡水出口',
+          '因為清帝國規定全臺灣的茶農都只能住在大稻埕',
+          '因為大稻埕距離高雄打狗港非常近'
+        ],
+        answer: 1,
+        exp: '北部山坡地生產的茶葉與樟腦，多先運到臨近淡水港的大稻埕精製集散，再順著淡水河運至淡水港出口，促使大稻埕快速繁榮！'
+      },
+      {
+        id: 5,
+        tag: '🍃 習作史料 • 約翰·陶德',
+        stem: '西元 1869 年，哪一位外國商人發現臺灣北部適合種茶，將臺灣烏龍茶從淡水港外銷到美國，成功打響「Formosa Tea」的國際知名度？',
+        options: [
+          '斯文豪',
+          '馬偕',
+          '約翰·陶德',
+          '巴克禮'
+        ],
+        answer: 2,
+        exp: '英國商人約翰·陶德（John Dodd）引進茶苗與製茶師傅，於 1869 年將臺灣茶從淡水港銷往美國，成為臺灣茶葉外銷的重要推手（習作 P.16）。'
+      },
+      {
+        id: 6,
+        tag: '📈 經濟重心轉移',
+        stem: '清帝國統治後期開港通商後，臺灣的經濟重心發生了什麼重大改變？原因為何？',
+        options: [
+          '由北往南轉移，因為南部盛產茶葉與樟腦',
+          '由南往北轉移，因為外銷大宗的茶葉與樟腦產地主要位於北部地區',
+          '由西往東轉移，因為東部開放了許多國際港口',
+          '完全沒有改變，臺南一直是全臺唯一繁榮的城市'
+        ],
+        answer: 1,
+        exp: '開港後外銷最賺錢的茶葉與樟腦產地集中在中部以北，帶動北部人口與商業激增，使臺灣經濟重心逐漸「由南往北」轉移。'
+      },
+      {
+        id: 7,
+        tag: '🌱 習作素養 • 環境挑戰',
+        stem: '從「環境保護」的角度來看，清末臺灣北部山區為了外銷而大量開墾山坡地種植茶葉，可能會帶來哪一項挑戰？（習作 P.16）',
+        options: [
+          '提高國際對臺灣茶葉的關注度',
+          '提升茶農的收入並促進地方商業發展',
+          '過度開墾可能導致水土流失與生態破壞',
+          '讓淡水港的水深變得更深、更好停船'
+        ],
+        answer: 2,
+        exp: '提高關注度與增加收入屬於經濟正面影響；從環境角度來看，山坡地過度開墾會造成水土流失與生態破壞（習作 P.16）。'
+      },
+      {
+        id: 8,
+        tag: '🗺️ 開港原因分析',
+        stem: '清帝國統治後期，為什麼許多西方國家都積極希望能夠來到臺灣進行貿易？',
+        options: [
+          '因為臺灣位居東亞航運的重要位置，且物產豐富、具有龐大經濟利益',
+          '因為清帝國免費贈送臺灣的土地給西方商人',
+          '因為西方國家想來臺灣學習傳統的稻米種植技術',
+          '因為臺灣沒有颱風也沒有地震，最適合居住'
+        ],
+        answer: 0,
+        exp: '臺灣地處東亞航運要道，加上茶、糖、樟腦、煤礦等物產豐富、商機龐大，吸引西方列強迫使清帝國開港通商。'
+      },
+
+      // === 分區 2：牡丹社事件與臺灣建省（第 9~16 題） ===
+      {
+        id: 9,
+        tag: '⚔️ 牡丹社事件起因',
+        stem: '西元 1874 年發生的「牡丹社事件」，是哪一個國家以「琉球人民漂流到臺灣南端遭原住民殺害」為藉口，出兵攻打臺灣南部部落？',
+        options: [
+          '荷蘭',
+          '英國',
+          '法國',
+          '日本'
+        ],
+        answer: 3,
+        exp: '1871年琉球人遇颱風漂流至臺灣南端遭原住民殺害，三年後（1874年）日本以此為藉口出兵攻打牡丹社等部落。'
+      },
+      {
+        id: 10,
+        tag: '🛡️ 沈葆楨來臺',
+        stem: '西元 1874 年牡丹社事件發生後，清帝國驚覺外國勢力對臺灣的野心，於是派遣哪一位官員來臺防範並推動各項海防建設？',
+        options: [
+          '施世榜',
+          '沈葆楨',
+          '劉銘傳',
+          '鄭成功'
+        ],
+        answer: 1,
+        exp: '牡丹社事件後，清帝國派遣沈葆楨來臺處理防務，並開始調整治理臺灣的策略。'
+      },
+      {
+        id: 11,
+        tag: '🏰 沈葆楨建設（習作 P.17）',
+        stem: '沈葆楨來臺後，為了加強臺灣南部的軍事防禦與地方管理，推動了哪兩項著名的軍事建築？',
+        options: [
+          '臺南「二鯤鯓砲臺（億載金城）」與屏東「恆春城」',
+          '基隆「獅球嶺隧道」與臺北「剝皮寮老街」',
+          '彰化「八堡圳」與高雄「曹公圳」',
+          '臺北「芝山岩隘門」與新竹「褒忠亭義民廟」'
+        ],
+        answer: 0,
+        exp: '沈葆楨在臺南修建全臺第一座西式砲臺「二鯤鯓砲臺（億載金城）」，並在屏東興建「恆春城」，強化南部海防。'
+      },
+      {
+        id: 12,
+        tag: '🧱 建築巧思 • 恆春城牆',
+        stem: '課本介紹恆春城的城牆頂端特別設計成「凹凸狀」，請問這樣的設計有什麼重要的軍事功能？',
+        options: [
+          '只是為了讓城牆看起來像城堡一樣美觀',
+          '方便士兵在上面曬稻穀和茶葉',
+          '不僅可以提供士兵掩護，還能方便射擊槍砲、提升防禦效果',
+          '用來當作下雨時的排水溝'
+        ],
+        answer: 2,
+        exp: '凹凸狀的城牆（垛口）可以讓守城士兵躲在凸起處獲得掩護，同時從凹處架設槍砲向外射擊，大幅提升防禦力！'
+      },
+      {
+        id: 13,
+        tag: '🚢 清法戰爭與臺灣建省',
+        stem: '西元 1884 年「清法戰爭」戰火波及臺灣的基隆與淡水等地。這場戰爭對臺灣行政地位帶來了哪一項重大轉變？',
+        options: [
+          '清帝國立刻將臺灣割讓給法國',
+          '清帝國頒布更嚴格的渡臺禁令，不准人民來臺',
+          '清帝國於西元 1885 年宣布將原屬福建省的臺灣獨立「建省」',
+          '清帝國關閉所有通商港口，停止對外貿易'
+        ],
+        answer: 2,
+        exp: '經歷清法戰爭後，清帝國更加重視臺灣的戰略地位，於西元 1885 年宣布臺灣建省，並任命劉銘傳為首任巡撫。'
+      },
+      {
+        id: 14,
+        tag: '🚂 劉銘傳與鐵路建設',
+        stem: '臺灣建省後，首任巡撫劉銘傳積極推動現代化交通建設。他所修建的鐵路連接哪兩個地方？當時購入的知名火車頭叫什麼名字？',
+        options: [
+          '臺南到高雄；飛馬號',
+          '基隆到新竹；騰雲號',
+          '臺北到花蓮；太魯閣號',
+          '彰化到屏東；自強號'
+        ],
+        answer: 1,
+        exp: '劉銘傳修建了「基隆到新竹」之間的鐵路，並購入德國製蒸汽火車頭「騰雲號」，開啟臺灣鐵路時代！'
+      },
+      {
+        id: 15,
+        tag: '⚡ 習作重點 • 電報與輪船',
+        stem: '劉銘傳除了修建鐵路之外，還購置新式輪船通行兩岸，並架設了「電報系統」。架設電報系統對當時的臺灣帶來什麼主要幫助？（習作 P.17）',
+        options: [
+          '讓遠距離溝通更快速，有助於清帝國即時掌握臺灣的軍事情報',
+          '可以直接用電報線把茶葉運送到美國去賣',
+          '可以取代水圳來灌溉彰化平原的農田',
+          '讓全臺灣每個家庭都能免費看電視'
+        ],
+        answer: 0,
+        exp: '電報系統大幅縮短了臺灣島內與兩岸的訊息傳遞時間，能即時掌握軍事情報，也讓商業資訊更流通！'
+      },
+      {
+        id: 16,
+        tag: '⏳ 歷史脈絡 • 態度轉變',
+        stem: '觀察清帝國統治臺灣超過兩百年的歷史，從前期的「頒布渡臺禁令」到後期的「沈葆楨築砲臺、臺灣建省、劉銘傳建鐵路」，清帝國對臺灣的態度有何轉變？',
+        options: [
+          '從積極建設轉為消極放棄',
+          '從消極防範轉為積極治理與推動現代化建設',
+          '從頭到尾都完全不管臺灣的發展',
+          '從鼓勵開港通商轉為禁止人民種田'
+        ],
+        answer: 1,
+        exp: '清初因提防反叛採消極限制；後期因開港通商及日、法外力入侵，態度轉為主動且積極建設臺灣！'
+      },
+
+      // === 分區 3：西方人的足跡與影響（第 17~25 題） ===
+      {
+        id: 17,
+        tag: '🌍 西方人來臺活動',
+        stem: '清帝國統治後期，隨著開港通商與條約簽訂，清帝國允許外國人士來到臺灣從事哪些活動？',
+        options: [
+          '商業貿易、調查研究、外交工作、傳教',
+          '只能在港口修理船隻，禁止上岸活動',
+          '擔任清帝國的臺灣巡撫並指揮清朝軍隊',
+          '全面接管臺灣所有的水圳與稻田'
+        ],
+        answer: 0,
+        exp: '清帝國統治後期，允許外國人士來臺從事商業、調查研究、外交工作和傳教等活動，為臺灣帶來多元的西方文化影響。'
+      },
+      {
+        id: 18,
+        tag: '🦎 西方名人 • 斯文豪',
+        stem: '假日時娃郁在同學家看到寵物「斯文豪氏大蝸牛」，好奇查詢了「斯文豪」的生平。關於英國人斯文豪的貢獻，下列何者正確？',
+        options: [
+          '他在淡水設立了全臺第一所女子學校',
+          '他以外交官員身分來臺，深入山林調查鳥類、蛙類及哺乳類，發表《福爾摩沙鳥類誌》並為許多物種命名',
+          '他在臺南開設全臺第一座西式醫館',
+          '他將基督教聖經翻譯成台語羅馬字'
+        ],
+        answer: 1,
+        exp: '英國外交官斯文豪熱愛自然生態調查，發表《福爾摩沙鳥類誌》，攀蜥、赤蛙、游蛇、大蝸牛等許多臺灣物種皆以他命名！'
+      },
+      {
+        id: 19,
+        tag: '🏥 西方名人 • 馬雅各',
+        stem: '有一位英國傳教士在臺灣南部（臺南）行醫與傳教，開設了「全臺第一座西式醫館」。雖然初期因謠言遭到當地人排斥，但他努力救治病患後終獲信任。請問他是誰？',
+        options: [
+          '斯文豪',
+          '馬雅各',
+          '馬偕',
+          '約翰·陶德'
+        ],
+        answer: 1,
+        exp: '馬雅各在臺灣南部傳教並開設全臺第一座西式醫館（新樓醫院前身），以精湛醫術與愛心化解謠言，讓民眾開始相信西醫。'
+      },
+      {
+        id: 20,
+        tag: '🦷 西方名人 • 馬偕',
+        stem: '來自加拿大的馬偕牧師長期在北臺灣（淡水一帶）奉獻，下列哪一項「不是」馬偕在臺灣的事蹟？',
+        options: [
+          '以免費拔牙與贈送瘧疾特效藥的方式幫助民眾並傳教',
+          '創辦「理學堂大書院（牛津學堂）」傳授現代科學與教育科目',
+          '設立「淡水女學堂」提倡女子教育',
+          '在臺南創辦「臺灣教會公報社」並發行臺灣第一份報紙'
+        ],
+        answer: 3,
+        exp: '創辦臺灣教會公報社、發行臺灣第一份報紙《臺灣府城教會報》的是在南部的「巴克禮」牧師喔！'
+      },
+      {
+        id: 21,
+        tag: '👩‍🎓 教育平權 • 淡水女學堂',
+        stem: '馬偕牧師看到清帝國時期臺灣社會普遍「重男輕女」，女性很少有讀書的機會，因此特別在淡水設立了哪一所學校來提倡女子教育？',
+        options: [
+          '臺南神學院',
+          '淡水女學堂',
+          '二鯤鯓書院',
+          '大稻埕茶學堂'
+        ],
+        answer: 1,
+        exp: '馬偕為打破重男輕女的觀念，設立「淡水女學堂」（全臺第一所新式女校），讓臺灣女性也能享有受教育的權利！'
+      },
+      {
+        id: 22,
+        tag: '❤️ 臺灣記得你 • 馬偕日',
+        stem: '馬偕牧師以「寧願燒盡，不願腐朽」為座右銘，將一生奉獻給臺灣。即使清法戰爭時教堂遭民眾誤會燒毀，仍堅持在理學堂大書院授課。後人訂立每年哪一天為「馬偕日」來懷念他？',
+        options: [
+          '1 月 1 日',
+          '2 月 28 日',
+          '6 月 2 日',
+          '12 月 25 日'
+        ],
+        answer: 2,
+        exp: '2001年政府在新北市淡水區為馬偕豎立石像，並訂定每年 6 月 2 日（馬偕逝世紀念日）為「馬偕日」，永遠懷念這位真正的「臺灣人」！'
+      },
+      {
+        id: 23,
+        tag: '💡 思辨題 • 醫療與辦學傳教',
+        stem: '清帝國時期，馬雅各、馬偕等西方傳教士來臺灣傳教時，為什麼都要同時推動「醫療」或「創辦學校」呢？',
+        options: [
+          '因為清帝國規定沒有當過醫生就不能來臺灣',
+          '透過免費醫療解除病痛與辦學分享知識，能卸下民眾對外來信仰的警戒心，讓更多人願意接觸基督福音',
+          '因為傳教士想要靠看病收高額醫藥費賺大錢',
+          '因為當時臺灣已經到處都是西式醫院與大學了'
+        ],
+        answer: 1,
+        exp: '當時臺灣民眾對西方人與陌生宗教抱有戒心，傳教士藉由行醫助人與辦學傳授新知，能建立信任感並拉近彼此距離。'
+      },
+      {
+        id: 24,
+        tag: '📰 西方名人 • 巴克禮',
+        stem: '英國傳教士巴克禮於西元 1875 年來到臺灣，在臺南生活長達 60 年。下列哪一組全都是巴克禮留給臺灣的重要文化資產？',
+        options: [
+          '創辦臺南神學院、將聖經翻譯成台語羅馬字、引進印刷機發行《臺灣府城教會報》',
+          '興建二鯤鯓砲臺、興建恆春城、開鑿八通關古道',
+          '發表《福爾摩沙鳥類誌》、發現斯文豪氏赤蛙、設計打狗領事館',
+          '免費拔牙兩萬顆、設立滬尾偕醫館、創立淡水女學堂'
+        ],
+        answer: 0,
+        exp: '巴克禮創辦臺南神學院、將聖經譯為台語羅馬字，並引進現代印刷技術，於 1885 年發行臺灣第一份報紙《臺灣府城教會報》！'
+      },
+      {
+        id: 25,
+        tag: '🌳 歷史意義 • 教會報與紀念公園',
+        stem: '關於臺灣第一份報紙《臺灣府城教會報》（今《臺灣教會公報》）與「巴克禮紀念公園」，下列敘述何者「正確」？',
+        options: [
+          '《臺灣府城教會報》只發行了一年就永遠停刊了',
+          '《臺灣府城教會報》只報導教會消息，完全沒有記錄臺灣社會的事情',
+          '《臺灣府城教會報》除了教會消息，也珍貴地記錄了臺灣的歷史與社會變遷，後人並建「巴克禮紀念公園」感念他',
+          '巴克禮紀念公園位於新北市淡水區，是為了紀念馬偕牧師而建'
+        ],
+        answer: 2,
+        exp: '《臺灣府城教會報》自 1885 年在臺南創刊並發行至今，保存了珍貴的臺灣歷史與社會變遷紀錄；臺南市政府也設立「巴克禮紀念公園」紀念他！'
+      }
+    ];
+
+    // --------------------------------------------------
+    // 11. 線上自我測驗邏輯 + Google Classroom 一鍵複製成績單
+    // --------------------------------------------------
+    let currentQuizList = [];
+    let currentModeName = '';
+    let currentIndex = 0;
+    let correctCount = 0;
+    let userAnswers = [];
+    let isLocked = false;
+    let lastQuizResult = null;
+
+    function startQuiz() {
+      const modeVal = document.querySelector('input[name="quiz-mode"]:checked').value;
+      if (modeVal === 'all') {
+        currentQuizList = QUESTION_BANK.slice();
+        currentModeName = '綜合挑戰 25 題';
+      } else if (modeVal === 'part1') {
+        currentQuizList = QUESTION_BANK.slice(0, 8);
+        currentModeName = '開港通商（8題）';
+      } else if (modeVal === 'part2') {
+        currentQuizList = QUESTION_BANK.slice(8, 16);
+        currentModeName = '防務與建省（8題）';
+      } else {
+        currentQuizList = QUESTION_BANK.slice(16, 25);
+        currentModeName = '西方人影響（9題）';
+      }
+
+      currentIndex = 0;
+      correctCount = 0;
+      userAnswers = [];
+      isLocked = false;
+
+      document.getElementById('quiz-prep').classList.add('hidden');
+      document.getElementById('quiz-result').classList.add('hidden');
+      document.getElementById('quiz-active').classList.remove('hidden');
+      document.getElementById('quiz-mode-badge').textContent = `📝 ${currentModeName}`;
+
+      renderCurrentQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderCurrentQuestion() {
+      const q = currentQuizList[currentIndex];
+      const total = currentQuizList.length;
+      isLocked = false;
+
+      document.getElementById('quiz-progress-text').textContent = `第 ${currentIndex + 1} / ${total} 題（題庫第 ${q.id} 題）`;
+      document.getElementById('quiz-score-live').textContent = `答對 ${correctCount} 題`;
+      document.getElementById('quiz-progress-bar').style.width = `${Math.round(((currentIndex + 1) / total) * 100)}%`;
+
+      document.getElementById('q-tag').textContent = q.tag;
+      document.getElementById('q-stem').textContent = `${q.id}. ${q.stem}`;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      document.getElementById('q-options').innerHTML = q.options.map((opt, idx) => `
+        <button onclick="selectOption(${idx})" id="opt-btn-${idx}" class="quiz-option w-full text-left p-3.5 sm:p-4 flex items-start gap-3">
+          <span class="w-7 h-7 rounded-full bg-[#fff4d8] border-2 border-[#4a3728] font-black text-sm flex items-center justify-center shrink-0 mt-0.5">${letters[idx]}</span>
+          <span class="text-sm sm:text-base font-bold text-[#4a3728] leading-relaxed">${opt}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('q-feedback').classList.add('hidden');
+      document.getElementById('btn-next-q').textContent = currentIndex === total - 1 ? '🏁 交卷看成績' : '下一題 ➜';
+    }
+
+    function selectOption(selectedIdx) {
+      if (isLocked) return;
+      isLocked = true;
+
+      const q = currentQuizList[currentIndex];
+      const isCorrect = selectedIdx === q.answer;
+      if (isCorrect) {
+        correctCount++;
+        playChime('success');
+      } else {
+        playChime('wrong');
+      }
+
+      userAnswers.push({ q, selectedIdx, isCorrect });
+
+      q.options.forEach((_, idx) => {
+        const btn = document.getElementById(`opt-btn-${idx}`);
+        btn.classList.add('locked');
+        if (idx === q.answer) btn.classList.add('correct');
+        else if (idx === selectedIdx && !isCorrect) btn.classList.add('wrong');
+      });
+
+      document.getElementById('quiz-score-live').textContent = `答對 ${correctCount} 題`;
+
+      const fbBox = document.getElementById('q-feedback');
+      const fbTitle = document.getElementById('q-feedback-title');
+      const fbExp = document.getElementById('q-feedback-exp');
+      const letters = ['A', 'B', 'C', 'D'];
+
+      fbBox.classList.remove('hidden', 'bg-[#e6f6ea]', 'bg-[#fdecef]');
+      if (isCorrect) {
+        fbBox.classList.add('bg-[#e6f6ea]');
+        fbTitle.textContent = '🎉 答對了！太厲害囉！';
+        fbTitle.className = 'text-lg font-black mb-1 text-[#2f7a44]';
+      } else {
+        fbBox.classList.add('bg-[#fdecef]');
+        fbTitle.textContent = `💡 再想想！正確答案是 (${letters[q.answer]})`;
+        fbTitle.className = 'text-lg font-black mb-1 text-[#c24250]';
+      }
+      fbExp.textContent = `【白話小解析】${q.exp}`;
+    }
+
+    function nextQuestion() {
+      if (currentIndex < currentQuizList.length - 1) {
+        currentIndex++;
+        renderCurrentQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function formatNowTime() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+
+    function finishQuiz() {
+      const total = currentQuizList.length;
+      const score = Math.round((correctCount / total) * 100);
+      const wrongList = userAnswers.filter(a => !a.isCorrect);
+      const wrongText = wrongList.length > 0
+        ? `第 ${wrongList.map(a => a.q.id).join('、')} 題`
+        : '無（全部答對！🎉）';
+      const finishedAt = formatNowTime();
+
+      lastQuizResult = {
+        modeName: currentModeName,
+        total,
+        correctCount,
+        score,
+        wrongList,
+        wrongText,
+        finishedAt
+      };
+
+      if (progressState.bestScore === null || score > progressState.bestScore) {
+        progressState.bestScore = score;
+        saveState();
+      }
+
+      let medal = '🌟', stars = '⭐⭐⭐', title = '完成自我測驗！', sub = '看看錯題小解析，再挑戰一次一定會更棒！';
+      if (score === 100) {
+        medal = '👑'; stars = '⭐⭐⭐⭐⭐'; title = '滿分！臺灣近代史小博士！'; sub = '太神啦！全部題目通通答對，掌聲鼓勵！';
+      } else if (score >= 85) {
+        medal = '🏆'; stars = '⭐⭐⭐⭐'; title = '表現超優秀！'; sub = '你對開港通商與清末現代化的歷史非常熟悉囉！';
+      } else if (score >= 60) {
+        medal = '🎖️'; stars = '⭐⭐⭐'; title = '順利過關，繼續加油！'; sub = '複習一下下方的錯題清單，下次挑戰滿分吧！';
+      } else {
+        medal = '💪'; stars = '⭐⭐'; title = '再接再厲，你一定可以！'; sub = '建議先回到圖鑑與小遊戲複習，再回來挑戰喔！';
+      }
+
+      document.getElementById('res-medal').textContent = medal;
+      document.getElementById('res-stars').textContent = stars;
+      document.getElementById('res-title').textContent = title;
+      document.getElementById('res-subtitle').textContent = sub;
+      document.getElementById('res-score').textContent = `${score} 分`;
+      document.getElementById('res-correct').textContent = `${correctCount} / ${total}`;
+      document.getElementById('res-wrong-nums').textContent = wrongText;
+      document.getElementById('res-time').textContent = finishedAt;
+
+      applyStudentInputs();
+      updateReportPreview();
+      renderWrongReviewList(wrongList);
+
+      const copyBtn = document.getElementById('btn-copy-report');
+      copyBtn.className = 'sketch-btn w-full bg-[#f29d61] text-white font-black text-base sm:text-lg py-3.5 px-6 flex items-center justify-center gap-2';
+      copyBtn.innerHTML = '<span>📋</span><span>一鍵複製成績單文字（貼到 Google Classroom 繳交）</span>';
+      document.getElementById('copy-hint').classList.add('hidden');
+
+      document.getElementById('quiz-active').classList.add('hidden');
+      document.getElementById('quiz-result').classList.remove('hidden');
+      playChime('success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateReportPreview() {
+      if (!lastQuizResult) return;
+      const cls = studentInfo.className || '（未填）';
+      const seat = studentInfo.seatNo || '（未填）';
+      const name = studentInfo.name || '（未填）';
+
+      const text = [
+        '【115五上社會 3-2 線上自我測驗成績單】',
+        `班級：${cls}｜座號：${seat}｜姓名：${name}`,
+        `測驗項目：${lastQuizResult.modeName}`,
+        `測驗成績：${lastQuizResult.score} 分（答對 ${lastQuizResult.correctCount} / ${lastQuizResult.total} 題）`,
+        `錯題題號：${lastQuizResult.wrongText}`,
+        `完成時間：${lastQuizResult.finishedAt}`
+      ].join('\n');
+
+      document.getElementById('report-preview').value = text;
+    }
+
+    function copyGradeReport() {
+      const textarea = document.getElementById('report-preview');
+      const text = textarea.value;
+
+      // 先嘗試相容 iFrame 與所有裝置的 textarea + execCommand，再備援 navigator.clipboard
+      let ok = false;
+      try {
+        textarea.focus();
+        textarea.select();
+        textarea.setSelectionRange(0, text.length);
+        ok = document.execCommand('copy');
+      } catch (e) {
+        ok = false;
+      }
+
+      if (ok) {
+        onCopySuccess();
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => onCopySuccess())
+          .catch(() => showToast('請手動全選上方成績單文字複製喔！'));
+      } else {
+        showToast('請手動全選上方成績單文字複製喔！');
+      }
+    }
+
+    function onCopySuccess() {
+      const copyBtn = document.getElementById('btn-copy-report');
+      copyBtn.className = 'sketch-btn w-full bg-[#7cb88b] text-white font-black text-base sm:text-lg py-3.5 px-6 flex items-center justify-center gap-2';
+      copyBtn.innerHTML = '<span>✅</span><span>已複製！請回到 Google Classroom 貼上繳交</span>';
+      document.getElementById('copy-hint').classList.remove('hidden');
+      playChime('success');
+      showToast('✅ 已複製！請回到 Google Classroom 貼上繳交');
+    }
+
+    function renderWrongReviewList(wrongList) {
+      const box = document.getElementById('wrong-review-list');
+      if (wrongList.length === 0) {
+        box.innerHTML = `
+          <div class="p-5 rounded-2xl bg-[#e6f6ea] border-2 border-[#2f7a44] text-center font-black text-[#2f7a44]">
+            🎉 太完美了！你沒有任何錯題，已經 100% 掌握第 3 單元第 2 課所有重點！
+          </div>
+        `;
+        return;
+      }
+
+      const letters = ['A', 'B', 'C', 'D'];
+      box.innerHTML = wrongList.map(item => `
+        <div class="p-4 rounded-2xl bg-[#fffdf8] border-2 border-[#4a3728]">
+          <div class="text-xs font-bold text-[#c96e2c] mb-1">第 ${item.q.id} 題 • ${item.q.tag}</div>
+          <div class="font-black text-sm sm:text-base text-[#4a3728] whitespace-pre-line">${item.q.stem}</div>
+          <div class="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
+            <div class="p-2.5 rounded-xl bg-[#fdecef] border border-[#ee8f99] font-bold text-[#c24250]">
+              ❌ 你的答案：(${letters[item.selectedIdx]}) ${item.q.options[item.selectedIdx]}
+            </div>
+            <div class="p-2.5 rounded-xl bg-[#e6f6ea] border border-[#7cb88b] font-bold text-[#2f7a44]">
+              ✅ 正確答案：(${letters[item.q.answer]}) ${item.q.options[item.q.answer]}
+            </div>
+          </div>
+          <div class="mt-2.5 p-2.5 rounded-xl bg-[#fff9e6] border border-[#decbb3] text-xs sm:text-sm text-[#4a3728]">
+            💡 <strong>白話解析：</strong>${item.q.exp}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function resetQuizToPrep() {
+      document.getElementById('quiz-result').classList.add('hidden');
+      document.getElementById('quiz-active').classList.add('hidden');
+      document.getElementById('quiz-prep').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --------------------------------------------------
+    // 12. 頁面初始化
+    // --------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      renderG1();
+      renderG2();
+      renderG3();
+      loadState();
+    });
+  </script>
+</body>
+</html>
